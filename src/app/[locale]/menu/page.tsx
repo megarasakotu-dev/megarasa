@@ -4,6 +4,9 @@ import { getCategories, getMenuItems } from '@/lib/data-service';
 import MenuCatalog from '@/components/MenuCatalog';
 import { UtensilsCrossed, Sparkles } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function generateMetadata({
   params,
 }: {

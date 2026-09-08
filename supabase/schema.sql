@@ -105,11 +105,17 @@ ALTER TABLE event_spaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
 
--- Public Read Policies
+-- Public Read & Write Policies
 CREATE POLICY "Public read for menu_categories" ON menu_categories FOR SELECT USING (true);
 CREATE POLICY "Public read for menu_items" ON menu_items FOR SELECT USING (true);
 CREATE POLICY "Public read for event_spaces" ON event_spaces FOR SELECT USING (true);
 CREATE POLICY "Public read for event_packages" ON event_packages FOR SELECT USING (true);
+
+-- Public CRUD Policies for Admin operations
+CREATE POLICY "Enable all for menu_items" ON menu_items FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for event_spaces" ON event_spaces FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for event_packages" ON event_packages FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for menu_categories" ON menu_categories FOR ALL USING (true) WITH CHECK (true);
 
 -- Public Insert Policy for inquiries form
 CREATE POLICY "Public insert for contact_inquiries" ON contact_inquiries FOR INSERT WITH CHECK (true);

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { MenuItem, MenuCategory } from '@/lib/mock-data';
 import {
+  getMenuItems,
   createMenuItem,
   updateMenuItem,
   deleteMenuItem,
@@ -23,6 +24,7 @@ import {
   Loader2,
   X,
   AlertCircle,
+  RefreshCw,
 } from 'lucide-react';
 
 export default function MenuManager({
@@ -33,8 +35,26 @@ export default function MenuManager({
   initialItems: MenuItem[];
 }) {
   const [items, setItems] = useState<MenuItem[]>(initialItems);
+  const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
+
+  // Load fresh items from Supabase / data-service on mount
+  const refreshItems = async () => {
+    setIsLoading(true);
+    try {
+      const liveItems = await getMenuItems(false);
+      setItems(liveItems);
+    } catch (err) {
+      console.error('Failed to load menu items:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshItems();
+  }, []);
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -169,6 +189,9 @@ export default function MenuManager({
           prev.map((it) => (it.id === editingItem.id ? res.data! : it))
         );
         showNotification(`Menu "${res.data.name_id}" berhasil diperbarui!`);
+        setIsModalOpen(false);
+      } else {
+        alert(`Gagal memperbarui menu di database: ${res.error || 'Terjadi kesalahan'}`);
       }
     } else {
       // CREATE
@@ -181,11 +204,13 @@ export default function MenuManager({
       if (res.success && res.data) {
         setItems((prev) => [res.data!, ...prev]);
         showNotification(`Menu baru "${res.data.name_id}" berhasil ditambahkan!`);
+        setIsModalOpen(false);
+      } else {
+        alert(`Gagal menambahkan menu ke database: ${res.error || 'Terjadi kesalahan'}`);
       }
     }
 
     setIsSaving(false);
-    setIsModalOpen(false);
   };
 
   const handleDelete = async (item: MenuItem) => {
@@ -196,6 +221,8 @@ export default function MenuManager({
     if (res.success) {
       setItems((prev) => prev.filter((it) => it.id !== item.id));
       showNotification(`Menu "${item.name_id}" telah dihapus.`);
+    } else {
+      alert(`Gagal menghapus menu: ${res.error || 'Terjadi kesalahan'}`);
     }
   };
 
@@ -211,6 +238,8 @@ export default function MenuManager({
       showNotification(
         `Status menu "${item.name_id}": ${nextStatus ? 'Tersedia' : 'Habis'}`
       );
+    } else {
+      alert(`Gagal mengubah status ketersediaan: ${res.error || 'Terjadi kesalahan'}`);
     }
   };
 
@@ -226,6 +255,8 @@ export default function MenuManager({
       showNotification(
         `Status favorit "${item.name_id}": ${nextStatus ? 'Aktif ⭐' : 'Nonaktif'}`
       );
+    } else {
+      alert(`Gagal mengubah status favorit: ${res.error || 'Terjadi kesalahan'}`);
     }
   };
 
@@ -241,16 +272,26 @@ export default function MenuManager({
 
       {/* Action Header: Search, Category Filter, and Add Button */}
       <div className="bg-white rounded-2xl p-5 border border-stone-200/80 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4">
-        {/* Left: Search input */}
-        <div className="relative w-full md:w-80">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Cari nama menu (ID/EN)..."
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-[#b43a22] focus:ring-2 focus:ring-[#b43a22]/10 outline-none"
-          />
+        {/* Left: Search input & refresh */}
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="relative w-full md:w-80">
+            <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Cari nama menu (ID/EN)..."
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:border-[#b43a22] focus:ring-2 focus:ring-[#b43a22]/10 outline-none"
+            />
+          </div>
+          <button
+            onClick={refreshItems}
+            disabled={isLoading}
+            className="p-2.5 rounded-xl border border-stone-200 hover:bg-stone-100 text-stone-600 transition-colors cursor-pointer shrink-0"
+            title="Refresh Data dari Supabase"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin text-[#b43a22]' : ''}`} />
+          </button>
         </div>
 
         {/* Center: Category Filter */}
