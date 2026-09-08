@@ -1,8 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EventSpace, EventPackage } from '@/lib/mock-data';
-import { updateEventSpace, updateEventPackage } from '@/lib/data-service';
+import {
+  getEventSpace,
+  getEventPackages,
+  updateEventSpace,
+  updateEventPackage,
+} from '@/lib/data-service';
 import {
   Building2,
   Layers,
@@ -14,6 +19,7 @@ import {
   Users,
   Clock,
   Coins,
+  RefreshCw,
 } from 'lucide-react';
 
 export default function EventSpaceManager({
@@ -25,6 +31,7 @@ export default function EventSpaceManager({
 }) {
   const [space, setSpace] = useState<EventSpace>(initialSpace);
   const [packages, setPackages] = useState<EventPackage[]>(initialPackages);
+  const [isLoading, setIsLoading] = useState(false);
   const [newFacility, setNewFacility] = useState('');
   const [isSavingSpace, setIsSavingSpace] = useState(false);
   const [savingPackageId, setSavingPackageId] = useState<string | null>(null);
@@ -35,6 +42,26 @@ export default function EventSpaceManager({
     setTimeout(() => setNotification(null), 3500);
   };
 
+  const refreshData = async () => {
+    setIsLoading(true);
+    try {
+      const [liveSpace, livePkgs] = await Promise.all([
+        getEventSpace(),
+        getEventPackages(),
+      ]);
+      setSpace(liveSpace);
+      setPackages(livePkgs);
+    } catch (err) {
+      console.error('Failed to load event space data:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshData();
+  }, []);
+
   const handleSaveSpace = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSavingSpace(true);
@@ -42,6 +69,8 @@ export default function EventSpaceManager({
     if (res.success && res.data) {
       setSpace(res.data);
       showNotification('Pengaturan Ruang Acara Lantai 2 berhasil disimpan!');
+    } else {
+      alert(`Gagal menyimpan ruang acara: ${res.error || 'Terjadi kesalahan'}`);
     }
     setIsSavingSpace(false);
   };
@@ -72,6 +101,8 @@ export default function EventSpaceManager({
         prev.map((p) => (p.id === pkg.id ? res.data! : p))
       );
       showNotification(`Paket "${pkg.name_id}" berhasil diperbarui!`);
+    } else {
+      alert(`Gagal memperbarui paket: ${res.error || 'Terjadi kesalahan'}`);
     }
     setSavingPackageId(null);
   };
