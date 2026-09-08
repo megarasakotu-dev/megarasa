@@ -3,9 +3,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
-import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+import PublicShell from '@/components/PublicShell';
 import { GtmHeadScript, GtmBodyNoscript } from '@/components/GtmScript';
 import '../globals.css';
 
@@ -110,10 +108,7 @@ export default async function LocaleLayout({
       <body className="antialiased bg-[#fdfbf8] text-[#2c1e17] selection:bg-[#b43a22] selection:text-white flex flex-col min-h-screen">
         <GtmBodyNoscript />
         <NextIntlClientProvider messages={messages}>
-          <Navbar />
-          <main className="flex-grow">{children}</main>
-          <Footer />
-          <FloatingWhatsApp />
+          <PublicShell>{children}</PublicShell>
         </NextIntlClientProvider>
       </body>
     </html>

@@ -104,6 +104,11 @@ export default function Footer() {
                   {tNav('contact')}
                 </Link>
               </li>
+              <li>
+                <Link href="/admin" className="text-stone-400 hover:text-amber-400 transition-colors text-xs inline-flex items-center gap-1 pt-1">
+                  <span>🔒 Panel Admin</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
