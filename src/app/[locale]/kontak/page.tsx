@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getSiteSettings } from '@/lib/data-service';
 import ContactForm from '@/components/ContactForm';
 import {
   Phone,
@@ -11,6 +12,9 @@ import {
   UtensilsCrossed,
   Building2,
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -43,8 +47,9 @@ export default async function ContactPage({
 
   const t = await getTranslations('contact');
   const tLoc = await getTranslations('location');
+  const settings = await getSiteSettings();
 
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6281299887766';
+  const waNumber = settings.whatsappNumber || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6281299887766';
 
   const waDiningUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
     locale === 'en'
@@ -134,7 +139,7 @@ export default async function ContactPage({
                   <h4 className="font-bold text-stone-900 mb-1">
                     {locale === 'en' ? 'Location' : 'Alamat'}
                   </h4>
-                  <p className="text-xs text-stone-600">{tLoc('addressValue')}</p>
+                  <p className="text-xs text-stone-600">{settings.address || tLoc('addressValue')}</p>
                 </div>
               </div>
 
@@ -144,8 +149,12 @@ export default async function ContactPage({
                   <h4 className="font-bold text-stone-900 mb-1">
                     {locale === 'en' ? 'Service Hours' : 'Jam Operasional'}
                   </h4>
-                  <p className="text-xs text-stone-600">{tLoc('hoursWeekday')}</p>
-                  <p className="text-xs text-stone-600">{tLoc('hoursWeekend')}</p>
+                  <p className="text-xs text-stone-600 font-semibold text-stone-800">
+                    {settings.hoursWeekday || tLoc('hoursWeekday')}
+                  </p>
+                  <p className="text-xs text-stone-600 font-semibold text-[#b43a22]">
+                    {settings.hoursWeekend || tLoc('hoursWeekend')}
+                  </p>
                 </div>
               </div>
 

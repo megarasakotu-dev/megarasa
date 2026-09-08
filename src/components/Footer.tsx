@@ -1,5 +1,9 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
+import { getSiteSettings, SiteSettings } from '@/lib/data-service';
 import { UtensilsCrossed, MapPin, Phone, Clock, Mail, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
@@ -9,7 +13,17 @@ export default function Footer() {
   const tLoc = useTranslations('location');
   const locale = useLocale();
 
-  const waNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6281299887766';
+  const [settings, setSettings] = useState<SiteSettings | null>(null);
+
+  useEffect(() => {
+    getSiteSettings().then(setSettings);
+  }, []);
+
+  const waNumber =
+    settings?.whatsappNumber ||
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
+    '6281299887766';
+
   const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(
     locale === 'en'
       ? 'Hello Kantin Mega Rasa Kota Tua, I would like to inquire about your menu and event space.'
@@ -119,8 +133,8 @@ export default function Footer() {
               {t('operationalHours')}
             </h4>
             <div className="space-y-2.5 text-sm text-stone-300 leading-relaxed">
-              <p>{tLoc('hoursWeekday')}</p>
-              <p>{tLoc('hoursWeekend')}</p>
+              <p>{settings?.hoursWeekday || tLoc('hoursWeekday')}</p>
+              <p>{settings?.hoursWeekend || tLoc('hoursWeekend')}</p>
               <p className="text-xs text-amber-300/80 italic pt-1">
                 {locale === 'en'
                   ? '*Upper floor event space available until 11:00 PM upon advance reservation.'
@@ -136,9 +150,9 @@ export default function Footer() {
               {t('contactInfo')}
             </h4>
             <div className="space-y-3 text-sm text-stone-300 leading-relaxed">
-              <p>{tLoc('addressValue')}</p>
+              <p>{settings?.address || tLoc('addressValue')}</p>
               <p className="text-xs text-amber-300/90 font-medium">
-                📍 {tLoc('landmarkValue')}
+                📍 {settings?.landmark || tLoc('landmarkValue')}
               </p>
               <div className="pt-2 flex flex-col gap-1.5">
                 <a

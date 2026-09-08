@@ -1,8 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { SiteSettings } from '@/lib/data-service';
-import { updateSiteSettings } from '@/lib/data-service';
+import { useState, useEffect } from 'react';
+import { SiteSettings, getSiteSettings, updateSiteSettings } from '@/lib/data-service';
 import {
   Settings,
   Phone,
@@ -12,6 +11,7 @@ import {
   Save,
   CheckCircle,
   ShieldAlert,
+  RefreshCw,
 } from 'lucide-react';
 
 export default function GeneralSettingsManager({
@@ -20,6 +20,7 @@ export default function GeneralSettingsManager({
   initialSettings: SiteSettings;
 }) {
   const [settings, setSettings] = useState<SiteSettings>(initialSettings);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
 
@@ -28,12 +29,32 @@ export default function GeneralSettingsManager({
     setTimeout(() => setNotification(null), 3500);
   };
 
+  const refreshSettings = async () => {
+    setIsLoading(true);
+    try {
+      const fresh = await getSiteSettings();
+      setSettings(fresh);
+    } catch (err) {
+      console.error('Error refreshing settings:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    refreshSettings();
+  }, []);
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
-    const updated = await updateSiteSettings(settings);
-    setSettings(updated);
-    showNotification('Pengaturan umum berhasil disimpan!');
+    const res = await updateSiteSettings(settings);
+    if (res.success) {
+      setSettings(res.data);
+      showNotification('Pengaturan umum berhasil disimpan!');
+    } else {
+      alert(`Gagal menyimpan ke Supabase: ${res.error || 'Terjadi kesalahan'}`);
+    }
     setIsSaving(false);
   };
 

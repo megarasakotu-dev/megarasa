@@ -294,15 +294,87 @@ export async function updateEventPackage(
 }
 
 /**
- * General Settings
+ * General Settings (Loads from Supabase site_settings table with localStorage & memory fallback)
  */
 export async function getSiteSettings(): Promise<SiteSettings> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase.from('site_settings').select('*');
+      if (!error && data && data.length > 0) {
+        const settingsMap: Record<string, string> = {};
+        data.forEach((row: { key: string; value: string }) => {
+          settingsMap[row.key] = row.value;
+        });
+        const combined = {
+          whatsappNumber: settingsMap['whatsapp_number'] || localSettings.whatsappNumber,
+          gtmId: settingsMap['gtm_id'] || localSettings.gtmId,
+          hoursWeekday: settingsMap['hours_weekday'] || localSettings.hoursWeekday,
+          hoursWeekend: settingsMap['hours_weekend'] || localSettings.hoursWeekend,
+          address: settingsMap['address'] || localSettings.address,
+          landmark: settingsMap['landmark'] || localSettings.landmark,
+        };
+        localSettings = combined;
+        return combined;
+      }
+    } catch (err) {
+      console.warn('Error loading site settings from Supabase:', err);
+    }
+  }
+
+  // Client-side localStorage fallback
+  if (typeof window !== 'undefined') {
+    try {
+      const saved = localStorage.getItem('megarasa_site_settings');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        localSettings = { ...localSettings, ...parsed };
+        return localSettings;
+      }
+    } catch {}
+  }
+
   return localSettings;
 }
 
-export async function updateSiteSettings(settings: Partial<SiteSettings>): Promise<SiteSettings> {
-  localSettings = { ...localSettings, ...settings };
-  return localSettings;
+export async function updateSiteSettings(
+  settings: Partial<SiteSettings>
+): Promise<{ success: boolean; data: SiteSettings; error?: string }> {
+  const current = await getSiteSettings();
+  const nextSettings: SiteSettings = { ...current, ...settings };
+  localSettings = nextSettings;
+
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem('megarasa_site_settings', JSON.stringify(nextSettings));
+    } catch {}
+  }
+
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const upsertRows = [
+        { key: 'hours_weekday', value: nextSettings.hoursWeekday },
+        { key: 'hours_weekend', value: nextSettings.hoursWeekend },
+        { key: 'whatsapp_number', value: nextSettings.whatsappNumber },
+        { key: 'address', value: nextSettings.address },
+        { key: 'landmark', value: nextSettings.landmark },
+        { key: 'gtm_id', value: nextSettings.gtmId },
+      ];
+
+      const { error } = await supabase
+        .from('site_settings')
+        .upsert(upsertRows, { onConflict: 'key' });
+
+      if (error) {
+        console.warn('Could not save to Supabase site_settings table:', error.message);
+        return { success: false, data: nextSettings, error: error.message };
+      }
+      return { success: true, data: nextSettings };
+    } catch (err: any) {
+      return { success: false, data: nextSettings, error: err?.message };
+    }
+  }
+
+  return { success: true, data: nextSettings };
 }
 
 /**

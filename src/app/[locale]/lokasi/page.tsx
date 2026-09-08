@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { getSiteSettings } from '@/lib/data-service';
 import {
   MapPin,
   Clock,
@@ -10,6 +11,9 @@ import {
   Navigation,
   Compass,
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -41,6 +45,7 @@ export default async function LocationPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('location');
+  const settings = await getSiteSettings();
 
   const googleMapsUrl =
     'https://maps.google.com/?q=Taman+Fatahillah+Kota+Tua+Jakarta';
@@ -87,12 +92,12 @@ export default async function LocationPage({
               </div>
 
               <p className="text-sm text-stone-700 leading-relaxed">
-                {t('addressValue')}
+                {settings.address || t('addressValue')}
               </p>
 
               <div className="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs text-amber-900 leading-relaxed font-medium">
                 <span className="font-bold block mb-1">📍 {t('landmarkTitle')}:</span>
-                {t('landmarkValue')}
+                {settings.landmark || t('landmarkValue')}
               </div>
 
               <a
@@ -124,18 +129,22 @@ export default async function LocationPage({
               </div>
 
               <div className="space-y-3 pt-2 text-sm text-stone-700">
-                <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-stone-100 gap-1">
                   <span className="font-medium text-stone-600">
-                    {locale === 'en' ? 'Monday – Friday' : 'Senin – Jumat'}
+                    {locale === 'en' ? 'Monday – Friday' : 'Hari Kerja'}
                   </span>
-                  <span className="font-bold text-stone-900">08:00 – 21:00 WIB</span>
+                  <span className="font-bold text-stone-900">
+                    {settings.hoursWeekday || t('hoursWeekday')}
+                  </span>
                 </div>
 
-                <div className="flex items-center justify-between pb-2 border-b border-stone-100">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-stone-100 gap-1">
                   <span className="font-medium text-stone-600">
-                    {locale === 'en' ? 'Saturday – Sunday / Holidays' : 'Sabtu – Minggu / Libur'}
+                    {locale === 'en' ? 'Weekend / Holidays' : 'Akhir Pekan / Libur'}
                   </span>
-                  <span className="font-bold text-[#b43a22]">07:30 – 22:00 WIB</span>
+                  <span className="font-bold text-[#b43a22]">
+                    {settings.hoursWeekend || t('hoursWeekend')}
+                  </span>
                 </div>
               </div>
 
