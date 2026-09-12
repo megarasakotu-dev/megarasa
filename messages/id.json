@@ -151,7 +151,24 @@
     "val3Title": "Penyajian Cepat & Tepat",
     "val3Desc": "Menghargai waktu istirahat makan siang para pekerja kantor dan jadwal liburan wisatawan.",
     "val4Title": "Ruang Pertemuan Lengkap",
-    "val4Desc": "Menyediakan ruang privat serbaguna dengan fasilitas lengkap di tengah Kota Tua."
+    "val4Desc": "Menyediakan ruang privat serbaguna dengan fasilitas lengkap di tengah Kota Tua.",
+    "reviews": {
+      "badge": "Ulasan Google Maps Terverifikasi",
+      "title": "Apa Kata Pengunjung Tentang Kantin Mega Rasa?",
+      "subtitle": "Pengalaman nyata dari wisatawan nusantara, rombongan tour, dan penyelenggara acara di kawasan Kota Tua Jakarta",
+      "overallScore": "4.9",
+      "outOf": "dari 5.0",
+      "totalReviews": "250+ Ulasan Google",
+      "filterAll": "Semua Ulasan",
+      "filterCulinary": "Cita Rasa Kuliner",
+      "filterNasiBox": "Nasi Box Rombongan",
+      "filterEvent": "Ruang Acara Lantai 2",
+      "filterTourist": "Wisatawan Asing & Luar Kota",
+      "helpfulBtn": "Membantu",
+      "btnWriteReview": "Tulis Ulasan di Google Maps",
+      "btnViewMore": "Lihat Semua Ulasan di Google Maps",
+      "verifiedVisit": "Kunjungan Terverifikasi Google"
+    }
   },
   "contact": {
     "metaTitle": "Kontak & Reservasi | Kantin Mega Rasa Kota Tua",

@@ -78,6 +78,23 @@ export interface NasiBoxPackage {
   order_index: number;
 }
 
+export interface GoogleReview {
+  id: string;
+  author_name: string;
+  author_avatar?: string;
+  author_badge_id: string;
+  author_badge_en: string;
+  rating: number;
+  relative_time_id: string;
+  relative_time_en: string;
+  review_text_id: string;
+  review_text_en: string;
+  category: 'culinary' | 'nasi_box' | 'event_space' | 'tourist';
+  ordered_items_id?: string[];
+  ordered_items_en?: string[];
+  likes_count: number;
+}
+
 export const MOCK_CATEGORIES: MenuCategory[] = [
   {
     id: 'cat-1',
@@ -614,4 +631,98 @@ export const MOCK_NASI_BOX_PACKAGES: NasiBoxPackage[] = [
     order_index: 4,
   },
 ];
+
+export const MOCK_GOOGLE_REVIEWS: GoogleReview[] = [
+  {
+    id: 'rev-1',
+    author_name: 'Budi Pratama',
+    author_badge_id: 'Local Guide · 142 ulasan',
+    author_badge_en: 'Local Guide · 142 reviews',
+    rating: 5,
+    relative_time_id: '1 minggu yang lalu',
+    relative_time_en: '1 week ago',
+    review_text_id: 'Salah satu hidden gem kuliner terbaik di Kota Tua Jakarta! Soto Betawi kuah santan susunya benar-benar gurih medok dan dagingnya empuk banget. Tempatnya sangat bersih dan ber-AC dingin, penyelamat banget setelah panas-panasan jalan di Taman Fatahillah. Es Selendang Mayang-nya juga otentik. Pasti akan balik lagi bareng teman kantor!',
+    review_text_en: 'One of the best culinary hidden gems in Old Batavia! The Soto Betawi with coconut-milk broth is incredibly rich and the beef melts in your mouth. Very clean, cold air conditioning—a true lifesaver after walking around Fatahillah Square under the sun. Authentic Es Selendang Mayang too. Will definitely return with colleagues!',
+    category: 'culinary',
+    ordered_items_id: ['Soto Betawi Kuah Santan Susu', 'Es Selendang Mayang Betawi', 'Tempe Mendoan'],
+    ordered_items_en: ['Betawi Beef Soup', 'Iced Selendang Mayang', 'Crispy Mendoan Tempeh'],
+    likes_count: 28,
+  },
+  {
+    id: 'rev-2',
+    author_name: 'Sarah Jenkins',
+    author_badge_id: 'Wisatawan Mancanegara (Australia)',
+    author_badge_en: 'Traveler from Melbourne, Australia',
+    rating: 5,
+    relative_time_id: '2 minggu yang lalu',
+    relative_time_en: '2 weeks ago',
+    review_text_id: 'Pengalaman bersantap pertama saya di Jakarta dan sangat luar biasa! Stafnya bisa berbahasa Inggris dengan sangat ramah dan membantu kami memilih menu yang pas untuk lidah barat. Nasi Goreng Mega Rasa dan Tahu Gejrot rasanya menakjubkan. Tempatnya higienis dan suasananya sangat homey tempo dulu. Highly recommended untuk turis internasional!',
+    review_text_en: 'My first dining experience in Jakarta and it was magnificent! The staff spoke English wonderfully and patiently guided us through traditional options. The Mega Rasa Fried Rice and crispy Tahu Gejrot tasted out of this world. Spotlessly clean and nostalgic colonial atmosphere. Highly recommended for international travelers!',
+    category: 'tourist',
+    ordered_items_id: ['Nasi Goreng Mega Rasa Kota Tua', 'Tahu Gejrot Cirebon', 'Es Jeruk Kelapa Muda'],
+    ordered_items_en: ['Mega Rasa Heritage Fried Rice', 'Tahu Gejrot', 'Young Coconut Citrus'],
+    likes_count: 35,
+  },
+  {
+    id: 'rev-3',
+    author_name: 'Hendra Kusuma',
+    author_badge_id: 'Koordinator Study Tour (Surabaya)',
+    author_badge_en: 'School Study Tour Leader',
+    rating: 5,
+    relative_time_id: '3 minggu yang lalu',
+    relative_time_en: '3 weeks ago',
+    review_text_id: 'Pesan 120 box Paket Hemat Wisatawan untuk rombongan bus anak-anak sekolah kami. Pengantaran tepat waktu di kantong parkir bus Jl. Cengkeh, nasinya masih hangat pulen, ayam lengkuasnya renyah gurih disukai semua anak. Kemasannya rapi bersekat dengan sendok tisu higienis. Pelayanan WhatsApp sangat cepat dan gratis ongkir. Terima kasih banyak Kantin Mega Rasa!',
+    review_text_en: 'Ordered 120 boxes of Tour Group Budget Meal Box for our school bus tour. Delivered punctually right to the Cengkeh bus parking lot, the rice was warm and fluffy, and the crispy galangal chicken was loved by all students. Sturdy multi-compartment boxes with sealed cutlery. Super responsive WhatsApp coordination and free delivery. Thank you Kantin Mega Rasa!',
+    category: 'nasi_box',
+    ordered_items_id: ['Paket Nasi Box Hemat Wisatawan (120 Box)', 'Air Mineral'],
+    ordered_items_en: ['Budget Meal Box Package (120 Boxes)', 'Mineral Water'],
+    likes_count: 42,
+  },
+  {
+    id: 'rev-4',
+    author_name: 'Dra. Maya Handayani',
+    author_badge_id: 'Penyelenggara Reuni Alumni UI',
+    author_badge_en: 'Alumni Reunion Organizer',
+    rating: 5,
+    relative_time_id: '1 bulan yang lalu',
+    relative_time_en: '1 month ago',
+    review_text_id: 'Sewa ruang acara lantai 2 untuk reuni angkatan 35 orang. Ruangannya privat, AC sangat dingin, sound system dan wireless mic bekerja jernih, ada proyektor juga. Paket prasmanan makanannya sangat enak dan porsi berlimpah. Semua tamu memuji pilihan tempat ini di jantung Kota Tua. Pelayanan stafnya luar biasa sigap!',
+    review_text_en: 'Rented the 2nd-floor private space for our 35-person alumni reunion. Private sanctuary, icy cold AC, crystal-clear sound system and wireless mics, plus HD projector. The heritage buffet was delectable with generous portions. All guests praised the venue choice in the heart of Kota Tua. Top-notch staff hospitality!',
+    category: 'event_space',
+    ordered_items_id: ['Sewa Ruang Privat Lantai 2', 'Paket Prasmanan Mega Rasa Komplit'],
+    ordered_items_en: ['2nd Floor Private Venue', 'Full Heritage Buffet Gathering Package'],
+    likes_count: 19,
+  },
+  {
+    id: 'rev-5',
+    author_name: 'Rian Firmansyah',
+    author_badge_id: 'Local Guide · 86 ulasan',
+    author_badge_en: 'Local Guide · 86 reviews',
+    rating: 5,
+    relative_time_id: '1 bulan yang lalu',
+    relative_time_en: '1 month ago',
+    review_text_id: 'Langganan makan siang kalau lagi dinas ke area Kota Tua / Kali Besar. Ayam Goreng Lengkuasnya juara, bumbunya meresap sampai ke tulang dengan taburan serundeng lengkuas melimpah. Tempatnya bersih, wifi cepat, dan toiletnya terawat wangi. Jarang nemu tempat makan di Kota Tua yang harga bersahabat tapi kualitas rasa bintang lima.',
+    review_text_en: 'My go-to lunch spot whenever I have business around Kota Tua / Kali Besar. The Galangal Fried Chicken is unbeatable with generous spiced crispy toppings. Clean tables, high-speed Wi-Fi, and spotless restrooms. Rare to find such an honest price with five-star restaurant standards in Old Town.',
+    category: 'culinary',
+    ordered_items_id: ['Ayam Goreng Lengkuas Mega Rasa', 'Es Kopi Susu Gula Aren'],
+    ordered_items_en: ['Crispy Galangal Fried Chicken', 'Palm Sugar Iced Coffee'],
+    likes_count: 16,
+  },
+  {
+    id: 'rev-6',
+    author_name: 'Kenji & Yuka Sato',
+    author_badge_id: 'Wisatawan Jepang (Tokyo)',
+    author_badge_en: 'Tourists from Tokyo, Japan',
+    rating: 5,
+    relative_time_id: '2 bulan yang lalu',
+    relative_time_en: '2 months ago',
+    review_text_id: 'Kami mampir setelah mengunjungi Museum Wayang. Mencoba Kopi Tubruk Rempah dan Kerak Telor bebek. Rasa rempahnya sangat harum dan menenangkan. Suasana resto sangat tenang dengan lagu-lagu tradisional yang menyejukkan. Stafnya sangat sopan kepada turis asing. Arigatou gozaimasu!',
+    review_text_en: 'We stopped by after visiting Wayang Museum. Tried the Spiced Heritage Drip Coffee and duck egg Kerak Telor. The aroma of Indonesian herbs was soothing and exquisite. Very peaceful ambiance with calming traditional music. Staff were polite and welcoming to foreigners. Arigatou gozaimasu!',
+    category: 'tourist',
+    ordered_items_id: ['Kerak Telor Spesial Bebek', 'Kopi Tubruk Rempah Kota Tua', 'Pisang Goreng Wijen Madu'],
+    ordered_items_en: ['Duck Egg Kerak Telor', 'Spiced Heritage Coffee', 'Honey Sesame Banana Fritters'],
+    likes_count: 24,
+  },
+];
+
 

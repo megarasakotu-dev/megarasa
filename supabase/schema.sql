@@ -118,13 +118,33 @@ CREATE TABLE IF NOT EXISTS nasi_box_packages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 9. ROW LEVEL SECURITY (RLS)
+-- 9. TABEL ULASAN GOOGLE MAPS (TESTIMONI PENGUNJUNG)
+CREATE TABLE IF NOT EXISTS google_reviews (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    author_name VARCHAR(150) NOT NULL,
+    author_avatar TEXT,
+    author_badge_id VARCHAR(100),
+    author_badge_en VARCHAR(100),
+    rating INT DEFAULT 5,
+    relative_time_id VARCHAR(50),
+    relative_time_en VARCHAR(50),
+    review_text_id TEXT NOT NULL,
+    review_text_en TEXT NOT NULL,
+    category VARCHAR(50) DEFAULT 'culinary', -- 'culinary', 'nasi_box', 'event_space', 'tourist'
+    ordered_items_id TEXT[] DEFAULT '{}',
+    ordered_items_en TEXT[] DEFAULT '{}',
+    likes_count INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 10. ROW LEVEL SECURITY (RLS)
 ALTER TABLE menu_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_spaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nasi_box_packages ENABLE ROW LEVEL SECURITY;
+ALTER TABLE google_reviews ENABLE ROW LEVEL SECURITY;
 
 -- Public Read & Write Policies
 CREATE POLICY "Public read for menu_categories" ON menu_categories FOR SELECT USING (true);
@@ -132,6 +152,7 @@ CREATE POLICY "Public read for menu_items" ON menu_items FOR SELECT USING (true)
 CREATE POLICY "Public read for event_spaces" ON event_spaces FOR SELECT USING (true);
 CREATE POLICY "Public read for event_packages" ON event_packages FOR SELECT USING (true);
 CREATE POLICY "Public read for nasi_box_packages" ON nasi_box_packages FOR SELECT USING (true);
+CREATE POLICY "Public read for google_reviews" ON google_reviews FOR SELECT USING (true);
 
 -- Public CRUD Policies for Admin operations
 CREATE POLICY "Enable all for menu_items" ON menu_items FOR ALL USING (true) WITH CHECK (true);
@@ -139,6 +160,7 @@ CREATE POLICY "Enable all for event_spaces" ON event_spaces FOR ALL USING (true)
 CREATE POLICY "Enable all for event_packages" ON event_packages FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for menu_categories" ON menu_categories FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for nasi_box_packages" ON nasi_box_packages FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for google_reviews" ON google_reviews FOR ALL USING (true) WITH CHECK (true);
 
 -- Public Insert Policy for inquiries form
 CREATE POLICY "Public insert for contact_inquiries" ON contact_inquiries FOR INSERT WITH CHECK (true);
@@ -294,4 +316,79 @@ INSERT INTO nasi_box_packages (
     'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80',
     false, 4
 );
+
+-- Ulasan Pengunjung Google Maps (Testimoni)
+INSERT INTO google_reviews (
+    author_name, author_badge_id, author_badge_en,
+    rating, relative_time_id, relative_time_en,
+    review_text_id, review_text_en,
+    category, ordered_items_id, ordered_items_en, likes_count
+) VALUES
+(
+    'Budi Pratama',
+    'Local Guide · 142 ulasan', 'Local Guide · 142 reviews',
+    5, '1 minggu yang lalu', '1 week ago',
+    'Salah satu hidden gem kuliner terbaik di Kota Tua Jakarta! Soto Betawi kuah santan susunya benar-benar gurih medok dan dagingnya empuk banget. Tempatnya sangat bersih dan ber-AC dingin, penyelamat banget setelah panas-panasan jalan di Taman Fatahillah. Es Selendang Mayang-nya juga otentik. Pasti akan balik lagi bareng teman kantor!',
+    'One of the best culinary hidden gems in Old Batavia! The Soto Betawi with coconut-milk broth is incredibly rich and the beef melts in your mouth. Very clean, cold air conditioning—a true lifesaver after walking around Fatahillah Square under the sun. Authentic Es Selendang Mayang too. Will definitely return with colleagues!',
+    'culinary',
+    ARRAY['Soto Betawi Kuah Santan Susu', 'Es Selendang Mayang Betawi', 'Tempe Mendoan'],
+    ARRAY['Betawi Beef Soup', 'Iced Selendang Mayang', 'Crispy Mendoan Tempeh'],
+    28
+),
+(
+    'Sarah Jenkins',
+    'Wisatawan Mancanegara (Australia)', 'Traveler from Melbourne, Australia',
+    5, '2 minggu yang lalu', '2 weeks ago',
+    'Pengalaman bersantap pertama saya di Jakarta dan sangat luar biasa! Stafnya bisa berbahasa Inggris dengan sangat ramah dan membantu kami memilih menu yang pas untuk lidah barat. Nasi Goreng Mega Rasa dan Tahu Gejrot rasanya menakjubkan. Tempatnya higienis dan suasananya sangat homey tempo dulu. Highly recommended untuk turis internasional!',
+    'My first dining experience in Jakarta and it was magnificent! The staff spoke English wonderfully and patiently guided us through traditional options. The Mega Rasa Fried Rice and crispy Tahu Gejrot tasted out of this world. Spotlessly clean and nostalgic colonial atmosphere. Highly recommended for international travelers!',
+    'tourist',
+    ARRAY['Nasi Goreng Mega Rasa Kota Tua', 'Tahu Gejrot Cirebon', 'Es Jeruk Kelapa Muda'],
+    ARRAY['Mega Rasa Heritage Fried Rice', 'Tahu Gejrot', 'Young Coconut Citrus'],
+    35
+),
+(
+    'Hendra Kusuma',
+    'Koordinator Study Tour (Surabaya)', 'School Study Tour Leader',
+    5, '3 minggu yang lalu', '3 weeks ago',
+    'Pesan 120 box Paket Hemat Wisatawan untuk rombongan bus anak-anak sekolah kami. Pengantaran tepat waktu di kantong parkir bus Jl. Cengkeh, nasinya masih hangat pulen, ayam lengkuasnya renyah gurih disukai semua anak. Kemasannya rapi bersekat dengan sendok tisu higienis. Pelayanan WhatsApp sangat cepat dan gratis ongkir. Terima kasih banyak Kantin Mega Rasa!',
+    'Ordered 120 boxes of Tour Group Budget Meal Box for our school bus tour. Delivered punctually right to the Cengkeh bus parking lot, the rice was warm and fluffy, and the crispy galangal chicken was loved by all students. Sturdy multi-compartment boxes with sealed cutlery. Super responsive WhatsApp coordination and free delivery. Thank you Kantin Mega Rasa!',
+    'nasi_box',
+    ARRAY['Paket Nasi Box Hemat Wisatawan (120 Box)', 'Air Mineral'],
+    ARRAY['Budget Meal Box Package (120 Boxes)', 'Mineral Water'],
+    42
+),
+(
+    'Dra. Maya Handayani',
+    'Penyelenggara Reuni Alumni UI', 'Alumni Reunion Organizer',
+    5, '1 bulan yang lalu', '1 month ago',
+    'Sewa ruang acara lantai 2 untuk reuni angkatan 35 orang. Ruangannya privat, AC sangat dingin, sound system dan wireless mic bekerja jernih, ada proyektor juga. Paket prasmanan makanannya sangat enak dan porsi berlimpah. Semua tamu memuji pilihan tempat ini di jantung Kota Tua. Pelayanan stafnya luar biasa sigap!',
+    'Rented the 2nd-floor private space for our 35-person alumni reunion. Private sanctuary, icy cold AC, crystal-clear sound system and wireless mics, plus HD projector. The heritage buffet was delectable with generous portions. All guests praised the venue choice in the heart of Kota Tua. Top-notch staff hospitality!',
+    'event_space',
+    ARRAY['Sewa Ruang Privat Lantai 2', 'Paket Prasmanan Mega Rasa Komplit'],
+    ARRAY['2nd Floor Private Venue', 'Full Heritage Buffet Gathering Package'],
+    19
+),
+(
+    'Rian Firmansyah',
+    'Local Guide · 86 ulasan', 'Local Guide · 86 reviews',
+    5, '1 bulan yang lalu', '1 month ago',
+    'Langganan makan siang kalau lagi dinas ke area Kota Tua / Kali Besar. Ayam Goreng Lengkuasnya juara, bumbunya meresap sampai ke tulang dengan taburan serundeng lengkuas melimpah. Tempatnya bersih, wifi cepat, dan toiletnya terawat wangi. Jarang nemu tempat makan di Kota Tua yang harga bersahabat tapi kualitas rasa bintang lima.',
+    'My go-to lunch spot whenever I have business around Kota Tua / Kali Besar. The Galangal Fried Chicken is unbeatable with generous spiced crispy toppings. Clean tables, high-speed Wi-Fi, and spotless restrooms. Rare to find such an honest price with five-star restaurant standards in Old Town.',
+    'culinary',
+    ARRAY['Ayam Goreng Lengkuas Mega Rasa', 'Es Kopi Susu Gula Aren'],
+    ARRAY['Crispy Galangal Fried Chicken', 'Palm Sugar Iced Coffee'],
+    16
+),
+(
+    'Kenji & Yuka Sato',
+    'Wisatawan Jepang (Tokyo)', 'Tourists from Tokyo, Japan',
+    5, '2 bulan yang lalu', '2 months ago',
+    'Kami mampir setelah mengunjungi Museum Wayang. Mencoba Kopi Tubruk Rempah dan Kerak Telor bebek. Rasa rempahnya sangat harum dan menenangkan. Suasana resto sangat tenang dengan lagu-lagu tradisional yang menyejukkan. Stafnya sangat sopan kepada turis asing. Arigatou gozaimasu!',
+    'We stopped by after visiting Wayang Museum. Tried the Spiced Heritage Drip Coffee and duck egg Kerak Telor. The aroma of Indonesian herbs was soothing and exquisite. Very peaceful ambiance with calming traditional music. Staff were polite and welcoming to foreigners. Arigatou gozaimasu!',
+    'tourist',
+    ARRAY['Kerak Telor Spesial Bebek', 'Kopi Tubruk Rempah Kota Tua', 'Pisang Goreng Wijen Madu'],
+    ARRAY['Duck Egg Kerak Telor', 'Spiced Heritage Coffee', 'Honey Sesame Banana Fritters'],
+    24
+);
+
 

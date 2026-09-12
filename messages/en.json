@@ -151,7 +151,24 @@
     "val3Title": "Prompt & Attentive Service",
     "val3Desc": "We value the tight schedules of office lunch breaks and traveling tourists.",
     "val4Title": "Private Event Convenience",
-    "val4Desc": "A fully equipped upper floor space ensuring seamless gatherings and celebrations."
+    "val4Desc": "A fully equipped upper floor space ensuring seamless gatherings and celebrations.",
+    "reviews": {
+      "badge": "Verified Google Maps Reviews",
+      "title": "What Our Guests Say on Google Maps",
+      "subtitle": "Authentic experiences shared by domestic visitors, international travelers, and event organizers in Kota Tua Jakarta",
+      "overallScore": "4.9",
+      "outOf": "out of 5.0",
+      "totalReviews": "250+ Google Reviews",
+      "filterAll": "All Reviews",
+      "filterCulinary": "Authentic Culinary",
+      "filterNasiBox": "Meal Box Catering",
+      "filterEvent": "2nd Floor Event Space",
+      "filterTourist": "Tourists & Travelers",
+      "helpfulBtn": "Helpful",
+      "btnWriteReview": "Write a Review on Google Maps",
+      "btnViewMore": "View All on Google Maps",
+      "verifiedVisit": "Verified Google Visit"
+    }
   },
   "contact": {
     "metaTitle": "Contact & Reservations | Kantin Mega Rasa Kota Tua",

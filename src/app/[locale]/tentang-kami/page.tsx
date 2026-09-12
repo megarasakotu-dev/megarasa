@@ -2,6 +2,8 @@ import Image from 'next/image';
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/routing';
+import { getGoogleReviews } from '@/lib/data-service';
+import GoogleReviewsSection from '@/components/GoogleReviewsSection';
 import {
   HeartHandshake,
   Sparkles,
@@ -12,6 +14,9 @@ import {
   ArrowRight,
   UtensilsCrossed,
 } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
 
 export async function generateMetadata({
   params,
@@ -43,6 +48,7 @@ export default async function AboutPage({
   setRequestLocale(locale);
 
   const t = await getTranslations('about');
+  const reviews = await getGoogleReviews();
 
   return (
     <div className="py-12 sm:py-16 space-y-16">
@@ -200,6 +206,11 @@ export default async function AboutPage({
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Google Maps Visitor Reviews / Testimonials Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+        <GoogleReviewsSection reviews={reviews} locale={locale} />
       </div>
     </div>
   );

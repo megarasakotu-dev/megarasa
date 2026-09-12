@@ -5,11 +5,13 @@ import {
   EventSpace,
   EventPackage,
   NasiBoxPackage,
+  GoogleReview,
   MOCK_CATEGORIES,
   MOCK_MENU_ITEMS,
   MOCK_EVENT_SPACE,
   MOCK_EVENT_PACKAGES,
   MOCK_NASI_BOX_PACKAGES,
+  MOCK_GOOGLE_REVIEWS,
 } from './mock-data';
 
 // Local mutable cache for fallback mode
@@ -17,6 +19,7 @@ let localMenuItems: MenuItem[] = [...MOCK_MENU_ITEMS];
 let localEventSpace: EventSpace = { ...MOCK_EVENT_SPACE };
 let localEventPackages: EventPackage[] = [...MOCK_EVENT_PACKAGES];
 let localNasiBoxPackages: NasiBoxPackage[] = [...MOCK_NASI_BOX_PACKAGES];
+let localGoogleReviews: GoogleReview[] = [...MOCK_GOOGLE_REVIEWS];
 
 export interface SiteSettings {
   whatsappNumber: string;
@@ -535,4 +538,29 @@ export async function saveContactInquiry(inquiry: {
 
   console.log('Saved reservation inquiry locally:', inquiry);
   return { success: true };
+}
+
+/**
+ * Fetch verified Google Maps Reviews
+ */
+export async function getGoogleReviews(category?: string): Promise<GoogleReview[]> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      let query = supabase.from('google_reviews').select('*').order('likes_count', { ascending: false });
+      if (category && category !== 'all') {
+        query = query.eq('category', category);
+      }
+      const { data, error } = await query;
+      if (!error && data && data.length > 0) {
+        return data as GoogleReview[];
+      }
+    } catch (err) {
+      console.warn('Supabase google_reviews query error, using mock data:', err);
+    }
+  }
+
+  if (category && category !== 'all') {
+    return localGoogleReviews.filter((r) => r.category === category);
+  }
+  return localGoogleReviews;
 }
