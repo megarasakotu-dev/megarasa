@@ -15,6 +15,8 @@ import {
   Star,
   Flame,
   CheckCircle2,
+  Truck,
+  ShoppingBag,
 } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
@@ -375,7 +377,118 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* 5. LOCATION SPOTLIGHT BANNER */}
+      {/* 5. NASI BOX & CATERING SPOTLIGHT (NEW FOR KOTA TUA TOURISTS & GROUPS) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-[#fcf7f0] via-[#faefe1] to-[#f4e6d4] border-2 border-amber-300/80 p-8 sm:p-12 shadow-xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            {/* Left Content */}
+            <div className="lg:col-span-7 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-200/80 text-amber-900 border border-amber-400/50 text-xs font-bold uppercase tracking-wider">
+                <Truck className="w-3.5 h-3.5 text-[#b43a22]" />
+                <span>
+                  {locale === 'en'
+                    ? 'Tour Group Meal Box & Catering'
+                    : 'Layanan Nasi Box & Katering Rombongan'}
+                </span>
+              </div>
+
+              <h2 className="font-serif text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-[#2e180e]">
+                {locale === 'en'
+                  ? 'Affordable & Delicious Meal Boxes for Kota Tua Visitors'
+                  : 'Nasi Box Lezat & Praktis untuk Rombongan Wisata Kota Tua'}
+              </h2>
+
+              <p className="text-stone-700 text-sm sm:text-base leading-relaxed">
+                {locale === 'en'
+                  ? 'Tailored for tour bus groups, school study trips, and office outings. Starting from only IDR 22,000/box for small (from 10 boxes) to large batches, with FREE delivery directly to Kota Tua meeting points!'
+                  : 'Solusi konsumsi terbaik untuk rombongan bus pariwisata, study tour sekolah, arisan, maupun kantor. Mulai dari Rp 22.000/box untuk partai kecil (mulai 10 box) hingga partai besar (ratusan box), plus fasilitas GRATIS ANTAR ke titik temu wisata Kota Tua!'}
+              </p>
+
+              {/* Badges / Highlights */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1">
+                {[
+                  {
+                    title: locale === 'en' ? 'From IDR 22K' : 'Mulai Rp 22.000',
+                    desc: locale === 'en' ? 'Budget friendly' : 'Porsi komplit',
+                  },
+                  {
+                    title: locale === 'en' ? 'From 10 Boxes' : 'Mulai 10 Box',
+                    desc: locale === 'en' ? 'Small to large' : 'Partai kecil/besar',
+                  },
+                  {
+                    title: locale === 'en' ? 'Free Delivery' : 'Gratis Antar',
+                    desc: locale === 'en' ? 'Kota Tua spots' : 'Ke spot wisata',
+                  },
+                  {
+                    title: locale === 'en' ? '100% Halal' : '100% Halal',
+                    desc: locale === 'en' ? 'Freshly cooked' : 'Higienis & rapi',
+                  },
+                ].map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3 bg-white/90 rounded-xl border border-amber-200/80 shadow-2xs text-center"
+                  >
+                    <span className="block font-serif font-black text-sm text-[#b43a22]">
+                      {item.title}
+                    </span>
+                    <span className="text-[11px] text-stone-600 block mt-0.5">
+                      {item.desc}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <Link
+                  href="/nasi-box"
+                  className="px-6 py-3.5 rounded-xl bg-[#b43a22] hover:bg-[#922a15] text-white font-bold text-sm shadow-md transition-all hover:-translate-y-0.5 inline-flex items-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>
+                    {locale === 'en'
+                      ? 'View Packages & Calculate Price'
+                      : 'Lihat Pilihan Paket & Hitung Estimasi'}
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+
+                <Link
+                  href="/kontak"
+                  className="px-5 py-3.5 rounded-xl bg-white border border-stone-300 hover:border-[#b43a22] text-stone-800 hover:text-[#b43a22] font-semibold text-sm transition-all shadow-2xs"
+                >
+                  <span>{locale === 'en' ? 'Inquire via Form' : 'Tanya Rombongan'}</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Image */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative aspect-4/3 rounded-2xl overflow-hidden shadow-2xl border-4 border-white bg-amber-950">
+                <Image
+                  src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80"
+                  alt="Nasi Box Kantin Mega Rasa"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <span className="text-xs font-bold text-amber-300 uppercase tracking-wider block">
+                    {locale === 'en' ? 'Kota Tua Catering' : 'Katering Wisatawan'}
+                  </span>
+                  <span className="font-serif font-bold text-base sm:text-lg block">
+                    {locale === 'en'
+                      ? 'Delivered fresh directly to your tour group bus or plaza.'
+                      : 'Diantar hangat langsung ke bus wisata atau titik kumpul rombongan Anda.'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. LOCATION SPOTLIGHT BANNER */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-amber-50/70 border border-amber-200/80 p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 max-w-2xl">

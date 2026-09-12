@@ -5,6 +5,7 @@ import { useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import AdminPinGate from '@/components/admin/AdminPinGate';
 import MenuManager from '@/components/admin/MenuManager';
+import NasiBoxManager from '@/components/admin/NasiBoxManager';
 import EventSpaceManager from '@/components/admin/EventSpaceManager';
 import GeneralSettingsManager from '@/components/admin/GeneralSettingsManager';
 import {
@@ -12,6 +13,7 @@ import {
   MOCK_MENU_ITEMS,
   MOCK_EVENT_SPACE,
   MOCK_EVENT_PACKAGES,
+  MOCK_NASI_BOX_PACKAGES,
 } from '@/lib/mock-data';
 import {
   UtensilsCrossed,
@@ -20,12 +22,13 @@ import {
   ExternalLink,
   LogOut,
   Sparkles,
+  ShoppingBag,
 } from 'lucide-react';
 
 export default function AdminPage() {
   const locale = useLocale();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
-  const [activeTab, setActiveTab] = useState<'menu' | 'event' | 'settings'>('menu');
+  const [activeTab, setActiveTab] = useState<'menu' | 'nasi-box' | 'event' | 'settings'>('menu');
 
   // Check auth session
   useEffect(() => {
@@ -100,22 +103,34 @@ export default function AdminPage() {
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex items-center gap-2 border-t border-stone-100 pt-1">
+          <div className="flex items-center gap-2 border-t border-stone-100 pt-1 overflow-x-auto">
             <button
               onClick={() => setActiveTab('menu')}
-              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer whitespace-nowrap ${
                 activeTab === 'menu'
                   ? 'border-[#b43a22] text-[#b43a22]'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
               }`}
             >
               <UtensilsCrossed className="w-4 h-4" />
-              <span>Manajemen Menu (Auto-Translate ✨)</span>
+              <span>Daftar Menu (Auto-Translate ✨)</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('nasi-box')}
+              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer whitespace-nowrap ${
+                activeTab === 'nasi-box'
+                  ? 'border-[#b43a22] text-[#b43a22]'
+                  : 'border-transparent text-stone-500 hover:text-stone-900'
+              }`}
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>🍱 Layanan Nasi Box</span>
             </button>
 
             <button
               onClick={() => setActiveTab('event')}
-              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer whitespace-nowrap ${
                 activeTab === 'event'
                   ? 'border-[#b43a22] text-[#b43a22]'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -127,7 +142,7 @@ export default function AdminPage() {
 
             <button
               onClick={() => setActiveTab('settings')}
-              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-4 py-3 border-b-2 font-bold text-sm transition-all cursor-pointer whitespace-nowrap ${
                 activeTab === 'settings'
                   ? 'border-[#b43a22] text-[#b43a22]'
                   : 'border-transparent text-stone-500 hover:text-stone-900'
@@ -146,6 +161,12 @@ export default function AdminPage() {
           <MenuManager
             categories={MOCK_CATEGORIES}
             initialItems={MOCK_MENU_ITEMS}
+          />
+        )}
+
+        {activeTab === 'nasi-box' && (
+          <NasiBoxManager
+            initialPackages={MOCK_NASI_BOX_PACKAGES}
           />
         )}
 

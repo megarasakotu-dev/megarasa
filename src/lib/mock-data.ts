@@ -60,6 +60,24 @@ export interface EventPackage {
   order_index: number;
 }
 
+export interface NasiBoxPackage {
+  id: string;
+  slug: string;
+  name_id: string;
+  name_en: string;
+  description_id: string;
+  description_en: string;
+  price: number;
+  min_order: number;
+  items_id: string[];
+  items_en: string[];
+  badge_id: string;
+  badge_en: string;
+  image_url: string;
+  is_popular: boolean;
+  order_index: number;
+}
+
 export const MOCK_CATEGORIES: MenuCategory[] = [
   {
     id: 'cat-1',
@@ -463,3 +481,137 @@ export const MOCK_EVENT_PACKAGES: EventPackage[] = [
     order_index: 3,
   },
 ];
+
+export const MOCK_NASI_BOX_PACKAGES: NasiBoxPackage[] = [
+  {
+    id: 'nb-1',
+    slug: 'paket-hemat-wisatawan',
+    name_id: 'Paket Hemat Wisatawan',
+    name_en: 'Tour Group Budget Meal Box',
+    description_id: 'Pilihan paling ekonomis & mengenyangkan untuk rombongan pelajar, study tour, dan rombongan bus wisata Kota Tua.',
+    description_en: 'The most economical and filling choice for students, study tours, and bus tour groups visiting Kota Tua.',
+    price: 22000,
+    min_order: 10,
+    items_id: [
+      'Nasi Putih Pulen / Nasi Kuning Gurih',
+      'Ayam Goreng Lengkuas Mega Rasa',
+      'Tempe Orek Manis Gurih',
+      'Telur Dadar Iris / Sambal Goreng Kentang',
+      'Lalapan Timun & Sambal Terasi',
+      'Kerupuk Renyah',
+      'Air Mineral Cup'
+    ],
+    items_en: [
+      'Fluffy Steamed White Rice or Savory Turmeric Rice',
+      'Crispy Galangal Fried Chicken',
+      'Sweet & Savory Tempeh Orek',
+      'Shredded Omelette or Spiced Potato Cubes',
+      'Fresh Cucumber & Spicy Sambal',
+      'Crispy Crackers',
+      'Sealed Cup Mineral Water'
+    ],
+    badge_id: 'Paling Hemat',
+    badge_en: 'Best Budget',
+    image_url: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+    is_popular: false,
+    order_index: 1,
+  },
+  {
+    id: 'nb-2',
+    slug: 'paket-selera-nusantara',
+    name_id: 'Paket Selera Nusantara',
+    name_en: 'Nusantara Delight Meal Box',
+    description_id: 'Paket terfavorit dengan lauk ganda ayam bumbu rujak & telur balado, pas untuk rombongan keluarga besar, arisan, & gathering kantor.',
+    description_en: 'Our best-selling package featuring grilled chicken & balado egg, ideal for family reunions and office gatherings.',
+    price: 28000,
+    min_order: 10,
+    items_id: [
+      'Nasi Putih Pulen Wangi',
+      'Ayam Bakar Bumbu Rujak / Ayam Goreng Lengkuas',
+      'Telur Balado Bulat Utuh',
+      'Tumis Buncis Jagung Manis',
+      'Sambal Bajak & Lalap Segar',
+      'Kerupuk Udang',
+      'Buah Pisang Segar',
+      'Air Mineral Botol 330ml'
+    ],
+    items_en: [
+      'Aromatic Fragrant Steamed Rice',
+      'Spiced Honey Grilled Chicken or Galangal Fried Chicken',
+      'Whole Hard-Boiled Egg in Balado Chili Sauce',
+      'Sautéed French Beans & Sweet Corn',
+      'Bajak Sambal & Fresh Greens',
+      'Crispy Shrimp Crackers',
+      'Fresh Sweet Banana',
+      'Bottled Mineral Water 330ml'
+    ],
+    badge_id: 'Paling Laris',
+    badge_en: 'Most Popular',
+    image_url: 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80',
+    is_popular: true,
+    order_index: 2,
+  },
+  {
+    id: 'nb-3',
+    slug: 'paket-spesial-batavia-komplit',
+    name_id: 'Paket Spesial Batavia Komplit',
+    name_en: 'Royal Batavia Heritage Feast Box',
+    description_id: 'Paket premium cita rasa khas Batavia dengan daging sapi empal serundeng, cocok untuk VIP, rapat instansi, atau tamu istimewa.',
+    description_en: 'Premium heritage lunch box with tender beef empal and Betawi spices, perfect for VIP guests and corporate luncheons.',
+    price: 35000,
+    min_order: 10,
+    items_id: [
+      'Nasi Ulam Betawi Wangi / Nasi Liwet Daun Jeruk',
+      'Empal Sapi Serundeng Manis / Semur Daging Gurih',
+      'Ayam Goreng Lengkuas / Suwir Rica',
+      'Bakwan Jagung Renyah / Sambal Goreng Ati',
+      'Acar Kuning Batavia & Emping Melinjo',
+      'Sambal Terasi Jeruk Limau',
+      'Puding Pandan / Buah Potong Segar',
+      'Air Mineral Botol 330ml'
+    ],
+    items_en: [
+      'Traditional Betawi Herb Rice or Lime-Leaf Rice',
+      'Tender Braised Beef Empal with Toasted Coconut or Semur Beef',
+      'Galangal Fried Chicken or Shredded Spiced Chicken',
+      'Crispy Sweet Corn Fritter or Spiced Potato Liver',
+      'Batavia Yellow Pickles & Emping Melinjo Crackers',
+      'Aromatic Kaffir Lime Sambal',
+      'Pandan Coconut Pudding or Fresh Cut Seasonal Fruit',
+      'Bottled Mineral Water 330ml'
+    ],
+    badge_id: 'Pilihan VIP',
+    badge_en: 'VIP Heritage',
+    image_url: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
+    is_popular: false,
+    order_index: 3,
+  },
+  {
+    id: 'nb-4',
+    slug: 'paket-snack-box-tradisional',
+    name_id: 'Paket Snack Box Tradisional',
+    name_en: 'Traditional Heritage Snack Box',
+    description_id: 'Kudapan lezat tempo dulu untuk pengganjal lapar di perjalanan bus wisata, coffee break acara, atau pembagian saat keliling museum.',
+    description_en: 'Delightful traditional Indonesian snacks for bus transit, museum walking breaks, and event coffee sessions.',
+    price: 15000,
+    min_order: 15,
+    items_id: [
+      '2 Pilihan Kue Tradisional (Risoles Ragout Ayam & Dadar Gulung Pandan Kelapa)',
+      'Kacang Bawang Gurih Renyah',
+      'Permen Segar & Tisu Higienis',
+      'Air Mineral Cup'
+    ],
+    items_en: [
+      '2 Heritage Pastries (Savory Chicken Ragout Risoles & Sweet Pandan Coconut Roll)',
+      'Crispy Garlic Roasted Peanuts',
+      'Refreshing Mint & Sanitized Napkin',
+      'Sealed Cup Mineral Water'
+    ],
+    badge_id: 'Coffee Break',
+    badge_en: 'Coffee Break',
+    image_url: 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80',
+    is_popular: false,
+    order_index: 4,
+  },
+];
+

@@ -8,6 +8,7 @@
   "nav": {
     "home": "Home",
     "menu": "Our Menu",
+    "nasiBox": "Meal Box & Catering",
     "eventSpace": "Event Space",
     "location": "Location & Hours",
     "about": "About Us",
@@ -168,12 +169,13 @@
     "inquiryTypeLabel": "Inquiry Purpose",
     "optDining": "Dining Table Reservation",
     "optEvent": "Event Space Rental (Upper Floor)",
+    "optNasiBox": "Tour Group Meal Box & Catering",
     "optGeneral": "General Inquiry / Feedback",
     "dateLabel": "Planned Date of Visit / Event",
-    "paxLabel": "Estimated Number of Guests (Pax)",
+    "paxLabel": "Estimated Guests / Meal Boxes",
     "paxPlaceholder": "e.g. 25",
     "notesLabel": "Additional Notes / Special Requests",
-    "notesPlaceholder": "Detail any AV setup, dietary preferences, or scheduling needs",
+    "notesPlaceholder": "Detail delivery meetup location in Kota Tua, preferred mealtime, dietary needs, etc.",
     "submitBtn": "Submit Reservation Now",
     "successMsg": "Thank you! Your inquiry has been received. The Kantin Mega Rasa team will contact you promptly via WhatsApp.",
     "errorMsg": "Sorry, there was an issue submitting your request. Please contact us directly via WhatsApp.",
@@ -181,6 +183,88 @@
     "quickChatDesc": "For same-day reservations or urgent inquiries, we recommend contacting our official WhatsApp directly:",
     "waDiningBtn": "WhatsApp: Table Booking",
     "waEventBtn": "WhatsApp: Event Space Rental"
+  },
+  "nasiBox": {
+    "metaTitle": "Heritage Meal Box & Tour Group Catering Kota Tua | Kantin Mega Rasa",
+    "metaDescription": "Order delicious, hygienic Indonesian meal boxes (Nasi Box) for tour groups, school trips, and events in Old Town Batavia (Kota Tua Jakarta). Affordable from IDR 22,000, 10 to hundreds of boxes, free delivery to Kota Tua landmarks!",
+    "hero": {
+      "badge": "Practical & Budget-Friendly Group Catering",
+      "title": "Delicious & Hygienic Meal Boxes for Tour Groups in Kota Tua",
+      "subtitle": "Kantin Mega Rasa provides authentic Indonesian lunch boxes and heritage snack boxes for small batches (starting from 10 boxes) to large tour bus groups (hundreds of boxes). Freshly cooked daily and delivered free to your meeting points across Old Batavia!",
+      "ctaOrder": "Order Meal Boxes Now",
+      "ctaPackages": "Explore Meal Packages",
+      "stat1": "From IDR 22K",
+      "stat1Desc": "Generous portions & complete dishes",
+      "stat2": "From 10 Boxes",
+      "stat2Desc": "Small groups to hundreds of boxes",
+      "stat3": "Free Delivery",
+      "stat3Desc": "To all Kota Tua tourist landmarks"
+    },
+    "benefits": {
+      "title": "Why Choose Kantin Mega Rasa Meal Boxes?",
+      "subtitle": "The premier meal solution for travel agencies, school excursions, family reunions, and corporate outings visiting Kota Tua",
+      "b1Title": "Affordable & Generous Portions",
+      "b1Desc": "Starting at only IDR 22,000 per box with nutritious traditional proteins, warm fluffy rice, homemade sambal, and mineral water. Highly budget-friendly.",
+      "b2Title": "Flexible Batch Quantities",
+      "b2Desc": "We gladly cater small private groups from just 10 boxes up to large chartered bus tours with 500+ attendees.",
+      "b3Title": "Free Delivery Across Kota Tua",
+      "b3Desc": "Punctual delivery directly to your designated spot: Fatahillah Square, Jakarta Kota Station, Cengkeh Bus Parking Lot, or surrounding museums.",
+      "b4Title": "Clean, Hygienic & 100% Halal",
+      "b4Desc": "Packaged in sturdy multi-compartment boxes with sanitized cutlery, tissue, and toothpicks. Prepared with fresh halal ingredients every morning."
+    },
+    "deliverySpots": {
+      "title": "Punctual Free Delivery to Your Kota Tua Meeting Point",
+      "desc": "Simply let us know your assembly location, and our dedicated delivery crew will hand over your fresh meals precisely at your scheduled lunchtime.",
+      "spots": [
+        "Fatahillah Square (In front of Jakarta History Museum)",
+        "Jakarta Kota Station (Beos Main Exit)",
+        "Jl. Cengkeh Tour Bus Parking Lot",
+        "Wayang, Ceramic & Bank Mandiri Museums",
+        "Kota Intan Drawbridge & Kali Besar Waterfront",
+        "Hotels & Corporate Offices in Old Batavia Area"
+      ]
+    },
+    "packages": {
+      "title": "Meal Box & Snack Box Packages",
+      "subtitle": "Beloved authentic Indonesian culinary selections crafted for everyone",
+      "minOrderLabel": "Min. {count} boxes",
+      "perBox": "/ box",
+      "orderBtn": "Choose & Order This Package",
+      "menuIncludes": "Included in the Box:"
+    },
+    "calculator": {
+      "title": "Estimate Total & Quick Order",
+      "subtitle": "Specify the number of boxes you require and send the prefilled booking details directly to our WhatsApp",
+      "selectPackage": "Select Meal Box Package",
+      "boxQty": "Order Quantity (Boxes)",
+      "date": "Delivery Date",
+      "time": "Handover Time",
+      "timePlaceholder": "e.g. 11:30 AM",
+      "location": "Delivery Point in Kota Tua",
+      "locationPlaceholder": "Select or enter delivery spot",
+      "notes": "Additional Notes (Optional)",
+      "notesPlaceholder": "e.g. Separate sambal / request custom tour group sticker label",
+      "totalEstimate": "Estimated Total Price",
+      "freeDeliveryBadge": "Free Delivery within Kota Tua",
+      "btnSubmit": "Order via WhatsApp Now",
+      "disclaimer": "*For large orders (over 50 boxes), we advise confirming 1-2 days in advance for seamless scheduling."
+    },
+    "customEvent": {
+      "title": "Need Custom Menus or Special Event Labels?",
+      "description": "We offer dish customization to fit dietary preferences or budget targets, including complimentary custom event labels for orders over 50 boxes.",
+      "cta": "Discuss Custom Catering on WhatsApp"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions (FAQ)",
+      "q1": "What is the minimum order for meal boxes?",
+      "a1": "Our minimum order is very accessible, starting from just 10 boxes. We cater from 10 up to 500+ boxes seamlessly.",
+      "q2": "Is delivery within Kota Tua truly free of charge?",
+      "a2": "Yes! Delivery to any tourist landmark, station, or parking area within the Kota Tua cultural heritage precinct is 100% free.",
+      "q3": "How far in advance should we place an order?",
+      "a3": "For small batches (10-30 boxes), orders can be placed 1 day prior (H-1). For large tour groups (50-200+ boxes), we recommend 2-3 days in advance.",
+      "q4": "What are the payment terms?",
+      "a4": "Bookings are secured with a 30-50% advance deposit via bank transfer, with the remaining balance settled upon delivery or by agreement."
+    }
   },
   "footer": {
     "tagline": "Kantin Mega Rasa serves authentic Betawi and Indonesian heritage dishes alongside an exclusive top-floor event space in historic Kota Tua, Jakarta.",

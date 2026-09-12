@@ -4,16 +4,19 @@ import {
   MenuItem,
   EventSpace,
   EventPackage,
+  NasiBoxPackage,
   MOCK_CATEGORIES,
   MOCK_MENU_ITEMS,
   MOCK_EVENT_SPACE,
   MOCK_EVENT_PACKAGES,
+  MOCK_NASI_BOX_PACKAGES,
 } from './mock-data';
 
 // Local mutable cache for fallback mode
 let localMenuItems: MenuItem[] = [...MOCK_MENU_ITEMS];
 let localEventSpace: EventSpace = { ...MOCK_EVENT_SPACE };
 let localEventPackages: EventPackage[] = [...MOCK_EVENT_PACKAGES];
+let localNasiBoxPackages: NasiBoxPackage[] = [...MOCK_NASI_BOX_PACKAGES];
 
 export interface SiteSettings {
   whatsappNumber: string;
@@ -291,6 +294,122 @@ export async function updateEventPackage(
     return { success: true, data: localEventPackages[idx] };
   }
   return { success: false, error: 'Package not found' };
+}
+
+/**
+ * Fetch all Nasi Box packages
+ */
+export async function getNasiBoxPackages(): Promise<NasiBoxPackage[]> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('nasi_box_packages')
+        .select('*')
+        .order('order_index', { ascending: true });
+
+      if (!error && data && data.length > 0) {
+        return data as NasiBoxPackage[];
+      }
+    } catch (err) {
+      console.warn('Supabase nasi_box_packages error, using mock data:', err);
+    }
+  }
+
+  return localNasiBoxPackages;
+}
+
+/**
+ * Create a new Nasi Box package
+ */
+export async function createNasiBoxPackage(
+  pkg: Omit<NasiBoxPackage, 'id'>
+): Promise<{ success: boolean; data?: NasiBoxPackage; error?: string }> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('nasi_box_packages')
+        .insert([pkg])
+        .select()
+        .single();
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      return { success: true, data: data as NasiBoxPackage };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Server error' };
+    }
+  }
+
+  const newPkg: NasiBoxPackage = {
+    ...pkg,
+    id: `nb-custom-${Date.now()}`,
+  };
+  localNasiBoxPackages.push(newPkg);
+  return { success: true, data: newPkg };
+}
+
+/**
+ * Update an existing Nasi Box package
+ */
+export async function updateNasiBoxPackage(
+  id: string,
+  updates: Partial<NasiBoxPackage>
+): Promise<{ success: boolean; data?: NasiBoxPackage; error?: string }> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('nasi_box_packages')
+        .update(updates)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      return { success: true, data: data as NasiBoxPackage };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Server error' };
+    }
+  }
+
+  const idx = localNasiBoxPackages.findIndex((pkg) => pkg.id === id);
+  if (idx !== -1) {
+    localNasiBoxPackages[idx] = { ...localNasiBoxPackages[idx], ...updates };
+    return { success: true, data: localNasiBoxPackages[idx] };
+  }
+  return { success: false, error: 'Nasi Box package not found' };
+}
+
+/**
+ * Delete a Nasi Box package
+ */
+export async function deleteNasiBoxPackage(
+  id: string
+): Promise<{ success: boolean; error?: string }> {
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { error } = await supabase
+        .from('nasi_box_packages')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        return { success: false, error: error.message };
+      }
+      return { success: true };
+    } catch (err: any) {
+      return { success: false, error: err?.message || 'Server error' };
+    }
+  }
+
+  const idx = localNasiBoxPackages.findIndex((pkg) => pkg.id === id);
+  if (idx !== -1) {
+    localNasiBoxPackages.splice(idx, 1);
+    return { success: true };
+  }
+  return { success: false, error: 'Nasi Box package not found' };
 }
 
 /**

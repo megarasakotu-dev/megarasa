@@ -8,6 +8,7 @@
   "nav": {
     "home": "Beranda",
     "menu": "Daftar Menu",
+    "nasiBox": "Nasi Box",
     "eventSpace": "Ruang Acara",
     "location": "Lokasi & Jam Buka",
     "about": "Tentang Kami",
@@ -168,12 +169,13 @@
     "inquiryTypeLabel": "Keperluan Anda",
     "optDining": "Reservasi Meja Makan",
     "optEvent": "Sewa Ruang Acara (Lantai Atas)",
+    "optNasiBox": "Pesanan Nasi Box / Katering Rombongan",
     "optGeneral": "Pertanyaan Umum / Lainnya",
     "dateLabel": "Rencana Tanggal Acara / Kunjungan",
-    "paxLabel": "Perkiraan Jumlah Orang (Pax)",
+    "paxLabel": "Perkiraan Jumlah Orang (Pax) / Box",
     "paxPlaceholder": "Contoh: 25",
     "notesLabel": "Catatan Tambahan / Kebutuhan Khusus",
-    "notesPlaceholder": "Tuliskan kebutuhan khusus (misal: butuh proyektor, pilihan menu, dll)",
+    "notesPlaceholder": "Tuliskan kebutuhan khusus (misal: titik temu pengantaran di Kota Tua, jam makan, dll)",
     "submitBtn": "Kirim Reservasi Sekarang",
     "successMsg": "Terima kasih! Permintaan Anda telah kami terima. Tim Kantin Mega Rasa akan segera menghubungi Anda melalui WhatsApp.",
     "errorMsg": "Maaf, terjadi kesalahan saat mengirim form. Silakan langsung hubungi kami via WhatsApp.",
@@ -181,6 +183,88 @@
     "quickChatDesc": "Untuk konfirmasi ketersediaan tempat hari ini atau esok hari, kami sarankan langsung menghubungi WhatsApp resmi kami:",
     "waDiningBtn": "Chat WA: Reservasi Makan",
     "waEventBtn": "Chat WA: Tanya Ruang Acara"
+  },
+  "nasiBox": {
+    "metaTitle": "Layanan Nasi Box & Katering Rombongan Wisata Kota Tua | Kantin Mega Rasa",
+    "metaDescription": "Pesan Nasi Box lezat dan higienis untuk rombongan wisata, study tour, gathering, dan acara di Kota Tua Jakarta. Harga terjangkau mulai Rp 22.000, melayani partai kecil hingga besar, gratis antar ke area Kota Tua!",
+    "hero": {
+      "badge": "Layanan Katering Praktis & Hemat",
+      "title": "Nasi Box Lezat & Higienis untuk Wisatawan & Rombongan Kota Tua",
+      "subtitle": "Kantin Mega Rasa melayani pesanan nasi kotak & snack box lezat khas nusantara untuk partai kecil (mulai 10 box) hingga partai besar (ratusan box). Praktis, fresh setiap hari, dan siap diantar gratis ke titik temu Anda di kawasan Kota Tua Jakarta!",
+      "ctaOrder": "Pesan Nasi Box Sekarang",
+      "ctaPackages": "Lihat Pilihan Paket",
+      "stat1": "Mulai Rp 22 Ribu",
+      "stat1Desc": "Porsi kenyang & lauk komplit",
+      "stat2": "Mulai 10 Box",
+      "stat2Desc": "Partai kecil hingga ratusan box",
+      "stat3": "Gratis Antar",
+      "stat3Desc": "Ke seluruh spot wisata Kota Tua"
+    },
+    "benefits": {
+      "title": "Mengapa Memilih Nasi Box Kantin Mega Rasa?",
+      "subtitle": "Solusi konsumsi terbaik untuk rombongan wisata, study tour sekolah, komunitas, dan acara kantor di Kota Tua",
+      "b1Title": "Harga Terjangkau & Porsi Mantap",
+      "b1Desc": "Mulai dari Rp 22.000 per box dengan lauk pauk bergizi, nasi pulen hangat, sambal sedap, dan air mineral. Sangat bersahabat untuk anggaran wisata.",
+      "b2Title": "Fleksibel Partai Kecil & Besar",
+      "b2Desc": "Kami melayani pemesanan mulai dari 10 box untuk keluarga/komunitas kecil hingga ratusan box untuk rombongan bus pariwisata.",
+      "b3Title": "Gratis Antar ke Area Kota Tua",
+      "b3Desc": "Pesanan diantar langsung tepat waktu ke lokasi Anda: Pelataran Museum Fatahillah, Stasiun Jakarta Kota (Beos), Kantong Parkir Bus Cengkeh, atau museum sekitar.",
+      "b4Title": "Kemasan Rapi, Higienis & Halal",
+      "b4Desc": "Menggunakan kotak sekat eksklusif tebal, dilengkapi sendok, tisu, dan tusuk gigi higienis. Dimasak dari bahan segar halal 100%."
+    },
+    "deliverySpots": {
+      "title": "Gratis Antar Tepat Waktu ke Titik Temu Anda di Kota Tua",
+      "desc": "Cukup tentukan titik serah terima, kurir kami siap mengantarkan tepat saat waktu makan siang / istirahat rombongan Anda tiba.",
+      "spots": [
+        "Plaza Taman Fatahillah (Depan Museum Sejarah)",
+        "Stasiun Jakarta Kota (Pintu Keluar Beos)",
+        "Kantong Parkir Bus Pariwisata Jl. Cengkeh",
+        "Museum Wayang, Keramik & Bank Mandiri",
+        "Jembatan Kota Intan & Kali Besar Barat",
+        "Gedung Kantor & Penginapan di sekitar Kota Tua"
+      ]
+    },
+    "packages": {
+      "title": "Pilihan Paket Nasi Box & Snack Box",
+      "subtitle": "Pilihan menu favorit lezat nusantara yang disukai semua usia",
+      "minOrderLabel": "Min. {count} box",
+      "perBox": "/ box",
+      "orderBtn": "Pilih & Pesan Paket Ini",
+      "menuIncludes": "Isi Menu Dalam Box:"
+    },
+    "calculator": {
+      "title": "Hitung Estimasi & Pesan Cepat",
+      "subtitle": "Tentukan jumlah box yang Anda butuhkan dan kirim langsung rincian pesanan ke WhatsApp kami",
+      "selectPackage": "Pilih Paket Nasi Box",
+      "boxQty": "Jumlah Pesanan (Box)",
+      "date": "Tanggal Pengantaran",
+      "time": "Jam Serah Terima",
+      "timePlaceholder": "Misal: 11.30 WIB",
+      "location": "Titik Pengantaran di Kota Tua",
+      "locationPlaceholder": "Pilih atau tulis lokasi pengantaran",
+      "notes": "Catatan Tambahan (Opsional)",
+      "notesPlaceholder": "Contoh: Mohon sambal dipisah / butuh stiker nama rombongan",
+      "totalEstimate": "Estimasi Total Biaya",
+      "freeDeliveryBadge": "Gratis Antar Area Kota Tua",
+      "btnSubmit": "Pesan via WhatsApp Sekarang",
+      "disclaimer": "*Pesanan partai besar (di atas 50 box) disarankan konfirmasi H-1 atau H-2 untuk persiapan optimal."
+    },
+    "customEvent": {
+      "title": "Butuh Nasi Box Khusus atau Custom Menu?",
+      "description": "Kami melayani penyesuaian menu lauk sesuai selera atau anggaran rombongan Anda, termasuk penyediaan stiker label acara gratis untuk pemesanan di atas 50 box.",
+      "cta": "Konsultasikan Kebutuhan Menu via WhatsApp"
+    },
+    "faq": {
+      "title": "Pertanyaan Umum (FAQ) Nasi Box",
+      "q1": "Berapa minimal pemesanan nasi box di Kantin Mega Rasa?",
+      "a1": "Minimal pemesanan sangat terjangkau, yaitu mulai dari 10 box saja. Kami siap melayani mulai dari 10 box hingga 500+ box.",
+      "q2": "Apakah pengantaran ke area Kota Tua benar-benar gratis?",
+      "a2": "Ya, pengantaran ke titik kumpul wisata di kawasan Kota Tua Jakarta (Taman Fatahillah, Stasiun Beos, Parkir Bus Cengkeh, museum-museum sekitar) adalah GRATIS tanpa biaya tambahan.",
+      "q3": "Kapan batas waktu pemesanan sebelum hari H?",
+      "a3": "Untuk partai kecil (10-30 box), pemesanan dapat dilakukan pada H-1. Untuk partai besar (50-200+ box), kami menyarankan konfirmasi H-2 atau H-3 agar persiapan bahan segar dan jadwal antar maksimal.",
+      "q4": "Bagaimana sistem pembayarannya?",
+      "a4": "Pemesanan dapat dikonfirmasi dengan DP (uang muka) sebesar 30-50% via transfer bank, dan pelunasan dilakukan saat pesanan tiba atau sesuai kesepakatan."
+    }
   },
   "footer": {
     "tagline": "Kantin Mega Rasa menyajikan aneka kuliner khas Betawi & Nusantara autentik, serta ruang acara eksklusif di kawasan cagar budaya Kota Tua Jakarta.",

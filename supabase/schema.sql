@@ -90,7 +90,7 @@ CREATE TABLE contact_inquiries (
     full_name VARCHAR(150) NOT NULL,
     email VARCHAR(150),
     phone_number VARCHAR(50) NOT NULL,
-    inquiry_type VARCHAR(50) NOT NULL, -- 'dining_reservation' OR 'event_space_rental' OR 'general'
+    inquiry_type VARCHAR(50) NOT NULL, -- 'dining_reservation' OR 'event_space_rental' OR 'nasi_box_catering' OR 'general'
     event_date DATE,
     estimated_pax INT,
     notes TEXT,
@@ -98,24 +98,47 @@ CREATE TABLE contact_inquiries (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 8. ROW LEVEL SECURITY (RLS)
+-- 8. TABEL PAKET NASI BOX (KATERING ROMBONGAN KOTA TUA)
+CREATE TABLE IF NOT EXISTS nasi_box_packages (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    name_id VARCHAR(150) NOT NULL,
+    name_en VARCHAR(150) NOT NULL,
+    description_id TEXT NOT NULL,
+    description_en TEXT NOT NULL,
+    price NUMERIC(12, 2) NOT NULL,
+    min_order INT DEFAULT 10,
+    items_id TEXT[] DEFAULT '{}',
+    items_en TEXT[] DEFAULT '{}',
+    badge_id VARCHAR(50),
+    badge_en VARCHAR(50),
+    image_url TEXT,
+    is_popular BOOLEAN DEFAULT FALSE,
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- 9. ROW LEVEL SECURITY (RLS)
 ALTER TABLE menu_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_spaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
+ALTER TABLE nasi_box_packages ENABLE ROW LEVEL SECURITY;
 
 -- Public Read & Write Policies
 CREATE POLICY "Public read for menu_categories" ON menu_categories FOR SELECT USING (true);
 CREATE POLICY "Public read for menu_items" ON menu_items FOR SELECT USING (true);
 CREATE POLICY "Public read for event_spaces" ON event_spaces FOR SELECT USING (true);
 CREATE POLICY "Public read for event_packages" ON event_packages FOR SELECT USING (true);
+CREATE POLICY "Public read for nasi_box_packages" ON nasi_box_packages FOR SELECT USING (true);
 
 -- Public CRUD Policies for Admin operations
 CREATE POLICY "Enable all for menu_items" ON menu_items FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for event_spaces" ON event_spaces FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for event_packages" ON event_packages FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for menu_categories" ON menu_categories FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for nasi_box_packages" ON nasi_box_packages FOR ALL USING (true) WITH CHECK (true);
 
 -- Public Insert Policy for inquiries form
 CREATE POLICY "Public insert for contact_inquiries" ON contact_inquiries FOR INSERT WITH CHECK (true);
@@ -212,3 +235,63 @@ INSERT INTO event_packages (
     ARRAY['4 full hours of private venue usage', 'Complete AV, microphones, projector, Wi-Fi, and banner backdrop stand', 'Full Indonesian buffet: 1 Main Meat/Chicken dish, Vegetable/Soto, Rice, Sambal & Crackers', '1 Traditional dessert (Es Selendang Mayang or Seasonal Fresh Fruits)', 'Free-flow Iced Citrus / Sweet Tea & Mineral Water'],
     'Paling Laris', 'Best Value & Seller', 3
 );
+
+-- Paket Nasi Box & Snack Box (Katering Wisata Kota Tua)
+INSERT INTO nasi_box_packages (
+    slug, name_id, name_en, description_id, description_en,
+    price, min_order, items_id, items_en, badge_id, badge_en,
+    image_url, is_popular, order_index
+) VALUES
+(
+    'paket-hemat-wisatawan',
+    'Paket Hemat Wisatawan',
+    'Tour Group Budget Meal Box',
+    'Pilihan paling ekonomis & mengenyangkan untuk rombongan pelajar, study tour, dan rombongan bus wisata Kota Tua.',
+    'The most economical and filling choice for students, study tours, and bus tour groups visiting Kota Tua.',
+    22000, 10,
+    ARRAY['Nasi Putih Pulen / Nasi Kuning Gurih', 'Ayam Goreng Lengkuas Mega Rasa', 'Tempe Orek Manis Gurih', 'Telur Dadar Iris / Sambal Goreng Kentang', 'Lalapan Timun & Sambal Terasi', 'Kerupuk Renyah', 'Air Mineral Cup'],
+    ARRAY['Fluffy Steamed White Rice or Savory Turmeric Rice', 'Crispy Galangal Fried Chicken', 'Sweet & Savory Tempeh Orek', 'Shredded Omelette or Spiced Potato Cubes', 'Fresh Cucumber & Spicy Sambal', 'Crispy Crackers', 'Sealed Cup Mineral Water'],
+    'Paling Hemat', 'Best Budget',
+    'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80',
+    false, 1
+),
+(
+    'paket-selera-nusantara',
+    'Paket Selera Nusantara',
+    'Nusantara Delight Meal Box',
+    'Paket terfavorit dengan lauk ganda ayam bumbu rujak & telur balado, pas untuk rombongan keluarga besar, arisan, & gathering kantor.',
+    'Our best-selling package featuring grilled chicken & balado egg, ideal for family reunions and office gatherings.',
+    28000, 10,
+    ARRAY['Nasi Putih Pulen Wangi', 'Ayam Bakar Bumbu Rujak / Ayam Goreng Lengkuas', 'Telur Balado Bulat Utuh', 'Tumis Buncis Jagung Manis', 'Sambal Bajak & Lalap Segar', 'Kerupuk Udang', 'Buah Pisang Segar', 'Air Mineral Botol 330ml'],
+    ARRAY['Aromatic Fragrant Steamed Rice', 'Spiced Honey Grilled Chicken or Galangal Fried Chicken', 'Whole Hard-Boiled Egg in Balado Chili Sauce', 'Sautéed French Beans & Sweet Corn', 'Bajak Sambal & Fresh Greens', 'Crispy Shrimp Crackers', 'Fresh Sweet Banana', 'Bottled Mineral Water 330ml'],
+    'Paling Laris', 'Most Popular',
+    'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=800&q=80',
+    true, 2
+),
+(
+    'paket-spesial-batavia-komplit',
+    'Paket Spesial Batavia Komplit',
+    'Royal Batavia Heritage Feast Box',
+    'Paket premium cita rasa khas Batavia dengan daging sapi empal serundeng, cocok untuk VIP, rapat instansi, atau tamu istimewa.',
+    'Premium heritage lunch box with tender beef empal and Betawi spices, perfect for VIP guests and corporate luncheons.',
+    35000, 10,
+    ARRAY['Nasi Ulam Betawi Wangi / Nasi Liwet Daun Jeruk', 'Empal Sapi Serundeng Manis / Semur Daging Gurih', 'Ayam Goreng Lengkuas / Suwir Rica', 'Bakwan Jagung Renyah / Sambal Goreng Ati', 'Acar Kuning Batavia & Emping Melinjo', 'Sambal Terasi Jeruk Limau', 'Puding Pandan / Buah Potong Segar', 'Air Mineral Botol 330ml'],
+    ARRAY['Traditional Betawi Herb Rice or Lime-Leaf Rice', 'Tender Braised Beef Empal with Toasted Coconut or Semur Beef', 'Galangal Fried Chicken or Shredded Spiced Chicken', 'Crispy Sweet Corn Fritter or Spiced Potato Liver', 'Batavia Yellow Pickles & Emping Melinjo Crackers', 'Aromatic Kaffir Lime Sambal', 'Pandan Coconut Pudding or Fresh Cut Seasonal Fruit', 'Bottled Mineral Water 330ml'],
+    'Pilihan VIP', 'VIP Heritage',
+    'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=800&q=80',
+    false, 3
+),
+(
+    'paket-snack-box-tradisional',
+    'Paket Snack Box Tradisional',
+    'Traditional Heritage Snack Box',
+    'Kudapan lezat tempo dulu untuk pengganjal lapar di perjalanan bus wisata, coffee break acara, atau pembagian saat keliling museum.',
+    'Delightful traditional Indonesian snacks for bus transit, museum walking breaks, and event coffee sessions.',
+    15000, 15,
+    ARRAY['2 Pilihan Kue Tradisional (Risoles Ragout Ayam & Dadar Gulung Pandan Kelapa)', 'Kacang Bawang Gurih Renyah', 'Permen Segar & Tisu Higienis', 'Air Mineral Cup'],
+    ARRAY['2 Heritage Pastries (Savory Chicken Ragout Risoles & Sweet Pandan Coconut Roll)', 'Crispy Garlic Roasted Peanuts', 'Refreshing Mint & Sanitized Napkin', 'Sealed Cup Mineral Water'],
+    'Coffee Break', 'Coffee Break',
+    'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80',
+    false, 4
+);
+

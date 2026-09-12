@@ -62,3 +62,13 @@ export const trackContactFormSubmit = (inquiryType: string, estimatedPax?: numbe
     label: `Form Submission - ${inquiryType}`,
   });
 };
+
+export const trackNasiBoxOrder = (packageName: string, quantity: number, estimatedTotal: number) => {
+  trackGtmEvent('click_nasi_box_order', {
+    package_name: packageName,
+    quantity,
+    estimated_total: estimatedTotal,
+    label: `Nasi Box Order: ${packageName} (${quantity} box)`,
+  });
+};
+

@@ -62,14 +62,16 @@ export default function ContactForm() {
   const handleOpenWaAfterSubmit = () => {
     trackWhatsAppClick('post_form_submit', 'Contact Success WhatsApp Link');
     const purposeText =
-      formData.inquiryType === 'event_space_rental'
-        ? 'Sewa Ruang Acara Lantai 2'
-        : 'Reservasi Meja Makan';
+      formData.inquiryType === 'nasi_box_catering'
+        ? (locale === 'en' ? 'Tour Group Meal Box & Catering' : 'Pesanan Nasi Box / Katering Rombongan')
+        : formData.inquiryType === 'event_space_rental'
+        ? (locale === 'en' ? '2nd Floor Event Space Rental' : 'Sewa Ruang Acara Lantai 2')
+        : (locale === 'en' ? 'Dining Table Reservation' : 'Reservasi Meja Makan');
 
     const text =
       locale === 'en'
-        ? `Hello Kantin Mega Rasa, I just submitted the inquiry form.\n\nName: ${formData.fullName}\nPurpose: ${purposeText}\nDate: ${formData.eventDate || '-'}\nPax: ${formData.estimatedPax || '-'}\nNotes: ${formData.notes || '-'}`
-        : `Halo Kantin Mega Rasa, saya baru saja mengirim formulir reservasi.\n\nNama: ${formData.fullName}\nKeperluan: ${purposeText}\nTanggal: ${formData.eventDate || '-'}\nJumlah Orang: ${formData.estimatedPax || '-'}\nCatatan: ${formData.notes || '-'}`;
+        ? `Hello Kantin Mega Rasa, I just submitted the inquiry form.\n\nName: ${formData.fullName}\nPurpose: ${purposeText}\nDate: ${formData.eventDate || '-'}\nQuantity/Pax: ${formData.estimatedPax || '-'}\nNotes: ${formData.notes || '-'}`
+        : `Halo Kantin Mega Rasa, saya baru saja mengirim formulir reservasi.\n\nNama: ${formData.fullName}\nKeperluan: ${purposeText}\nTanggal: ${formData.eventDate || '-'}\nJumlah Orang/Box: ${formData.estimatedPax || '-'}\nCatatan: ${formData.notes || '-'}`;
 
     window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -204,6 +206,7 @@ export default function ContactForm() {
             className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-white focus:border-[#b43a22] focus:ring-2 focus:ring-[#b43a22]/20 text-sm outline-none transition-all cursor-pointer font-medium"
           >
             <option value="dining_reservation">{t('optDining')}</option>
+            <option value="nasi_box_catering">{t('optNasiBox')}</option>
             <option value="event_space_rental">{t('optEvent')}</option>
             <option value="general">{t('optGeneral')}</option>
           </select>

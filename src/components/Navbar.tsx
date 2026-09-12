@@ -16,6 +16,7 @@ export default function Navbar() {
   const navItems = [
     { href: '/', label: t('home') },
     { href: '/menu', label: t('menu') },
+    { href: '/nasi-box', label: t('nasiBox') },
     { href: '/ruang-acara', label: t('eventSpace') },
     { href: '/lokasi', label: t('location') },
     { href: '/tentang-kami', label: t('about') },

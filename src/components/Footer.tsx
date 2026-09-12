@@ -99,6 +99,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/nasi-box" className="hover:text-amber-300 transition-colors">
+                  {tNav('nasiBox')}
+                </Link>
+              </li>
+              <li>
                 <Link href="/ruang-acara" className="hover:text-amber-300 transition-colors">
                   {tNav('eventSpace')}
                 </Link>
