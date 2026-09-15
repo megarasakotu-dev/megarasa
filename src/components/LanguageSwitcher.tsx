@@ -13,9 +13,21 @@ export default function LanguageSwitcher() {
 
   const toggleLanguage = (nextLocale: string) => {
     if (nextLocale === locale) return;
+    const currentScrollY = typeof window !== 'undefined' ? window.scrollY : 0;
+
     startTransition(() => {
-      router.replace(pathname, { locale: nextLocale });
+      router.replace(pathname, { locale: nextLocale, scroll: false });
     });
+
+    // Safeguard scroll position in case of browser/Next.js layout re-render
+    if (typeof window !== 'undefined') {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+      });
+      setTimeout(() => {
+        window.scrollTo({ top: currentScrollY, behavior: 'instant' });
+      }, 50);
+    }
   };
 
   return (
