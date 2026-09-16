@@ -89,6 +89,8 @@
     "priceFormat": "Rp {price}",
     "spicyLevel": "Tingkat Pedas: Level {level}",
     "orderViaWA": "Pesan / Tanya Menu",
+    "notAvailable": "TIDAK TERSEDIA",
+    "notAvailableDesc": "Habis / Sementara tidak tersedia",
     "noItemFound": "Tidak ada menu pada kategori ini."
   },
   "eventSpace": {

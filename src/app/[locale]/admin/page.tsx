@@ -181,6 +181,8 @@ export default function AdminPage() {
           <GeneralSettingsManager
             initialSettings={{
               whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6281299887766',
+              instagramUrl: 'https://instagram.com/kantinmegarasa',
+              facebookUrl: 'https://facebook.com/kantinmegarasa',
               gtmId: process.env.NEXT_PUBLIC_GTM_ID || 'GTM-MEGARASA1',
               hoursWeekday: 'Senin - Jumat: 08.00 - 21.00 WIB',
               hoursWeekend: 'Sabtu - Minggu / Libur: 07.30 - 22.00 WIB',

@@ -89,6 +89,8 @@
     "priceFormat": "IDR {price}",
     "spicyLevel": "Spicy: Level {level}",
     "orderViaWA": "Inquire / Order via WhatsApp",
+    "notAvailable": "NOT AVAILABLE",
+    "notAvailableDesc": "Sold out / Temporarily unavailable",
     "noItemFound": "No items found in this category."
   },
   "eventSpace": {

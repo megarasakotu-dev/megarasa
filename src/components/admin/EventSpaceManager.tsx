@@ -8,6 +8,7 @@ import {
   updateEventSpace,
   updateEventPackage,
 } from '@/lib/data-service';
+import ImageUploader from './ImageUploader';
 import {
   Building2,
   Layers,
@@ -257,6 +258,16 @@ export default function EventSpaceManager({
               className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm outline-none focus:border-[#b43a22]"
             />
           </div>
+        </div>
+
+        {/* Foto Utama Ruang Acara */}
+        <div className="pt-2">
+          <ImageUploader
+            label="Foto Utama Ruang Acara Lantai 2"
+            value={space.primary_image_url}
+            onChange={(url) => setSpace({ ...space, primary_image_url: url })}
+            folder="spaces"
+          />
         </div>
 
         {/* Kelola Daftar Fasilitas */}

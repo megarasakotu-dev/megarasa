@@ -9,6 +9,7 @@ import {
   updateNasiBoxPackage,
   deleteNasiBoxPackage,
 } from '@/lib/data-service';
+import ImageUploader from './ImageUploader';
 import {
   Plus,
   Edit2,
@@ -551,18 +552,13 @@ export default function NasiBoxManager({
                 </div>
               </div>
 
-              {/* Image URL */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-bold text-stone-700 uppercase block">
-                  URL Foto Kemasan / Menu
-                </label>
-                <input
-                  type="url"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm outline-none focus:border-[#b43a22]"
-                />
-              </div>
+              {/* Image Upload */}
+              <ImageUploader
+                label="Foto Kemasan / Nasi Box"
+                value={formData.image_url}
+                onChange={(url) => setFormData({ ...formData, image_url: url })}
+                folder="nasi-box"
+              />
 
               {/* Popular Checkbox */}
               <div className="flex items-center gap-3 pt-1">

@@ -204,6 +204,8 @@ CREATE POLICY "Enable all for contact_inquiries" ON contact_inquiries FOR ALL US
 -- 1. PENGATURAN UMUM SITUS
 INSERT INTO site_settings (key, value) VALUES
 ('whatsapp_number', '628129506237'),
+('instagram_url', 'https://instagram.com/kantinmegarasa'),
+('facebook_url', 'https://facebook.com/kantinmegarasa'),
 ('gtm_id', 'GTM-MEGARASA1'),
 ('hours_weekday', 'Senin - Jumat: 08.00 - 21.00 WIB'),
 ('hours_weekend', 'Sabtu - Minggu / Libur: 07.30 - 22.00 WIB'),
@@ -437,5 +439,47 @@ INSERT INTO google_reviews (
 );
 
 -- ==============================================================================
--- SELESAI! SEMUA TABEL, POLICIES, DAN DATA AWAL TELAH SIAP DIGUNAKAN.
+-- 6. SUPABASE STORAGE BUCKET & POLICIES (MEDIA PENYIMPANAN GAMBAR)
 -- ==============================================================================
+-- Membuat Bucket 'megarasa-media' untuk Foto Menu, Nasi Box & Ruang Acara
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES (
+    'megarasa-media',
+    'megarasa-media',
+    true,
+    5242880, -- Batas ukuran file 5 MB
+    ARRAY['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+)
+ON CONFLICT (id) DO UPDATE SET
+    public = EXCLUDED.public,
+    file_size_limit = EXCLUDED.file_size_limit,
+    allowed_mime_types = EXCLUDED.allowed_mime_types;
+
+-- Kebijakan Storage 1: Akses Baca Publik (Semua Pengunjung Web Bisa Melihat Foto)
+DROP POLICY IF EXISTS "Public Read megarasa-media" ON storage.objects;
+CREATE POLICY "Public Read megarasa-media"
+ON storage.objects FOR SELECT
+USING (bucket_id = 'megarasa-media');
+
+-- Kebijakan Storage 2: Akses Upload / Insert Foto dari Admin
+DROP POLICY IF EXISTS "Allow Upload megarasa-media" ON storage.objects;
+CREATE POLICY "Allow Upload megarasa-media"
+ON storage.objects FOR INSERT
+WITH CHECK (bucket_id = 'megarasa-media');
+
+-- Kebijakan Storage 3: Akses Update / Replace Foto
+DROP POLICY IF EXISTS "Allow Update megarasa-media" ON storage.objects;
+CREATE POLICY "Allow Update megarasa-media"
+ON storage.objects FOR UPDATE
+USING (bucket_id = 'megarasa-media');
+
+-- Kebijakan Storage 4: Akses Hapus Foto
+DROP POLICY IF EXISTS "Allow Delete megarasa-media" ON storage.objects;
+CREATE POLICY "Allow Delete megarasa-media"
+ON storage.objects FOR DELETE
+USING (bucket_id = 'megarasa-media');
+
+-- ==============================================================================
+-- SELESAI! SEMUA TABEL, STORAGE, POLICIES, DAN DATA AWAL TELAH SIAP DIGUNAKAN.
+-- ==============================================================================
+

@@ -101,11 +101,11 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} className="scroll-smooth">
+    <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
       <head>
         <GtmHeadScript />
       </head>
-      <body className="antialiased bg-[#fdfbf8] text-[#2c1e17] selection:bg-[#b43a22] selection:text-white flex flex-col min-h-screen">
+      <body className="antialiased bg-[#fdfbf8] text-[#2c1e17] selection:bg-[#b43a22] selection:text-white flex flex-col min-h-screen" suppressHydrationWarning>
         <GtmBodyNoscript />
         <NextIntlClientProvider messages={messages}>
           <PublicShell>{children}</PublicShell>

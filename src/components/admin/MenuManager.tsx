@@ -11,6 +11,7 @@ import {
   toggleMenuAvailable,
   toggleMenuFavorite,
 } from '@/lib/data-service';
+import ImageUploader from './ImageUploader';
 import {
   Plus,
   Search,
@@ -650,24 +651,17 @@ export default function MenuManager({
                 </div>
               </div>
 
-              {/* Photo URL & Spicy level */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">
-                    URL Foto Makanan (Unsplash / Supabase)
-                  </label>
-                  <input
-                    type="url"
-                    required
-                    value={formData.image_url}
-                    onChange={(e) =>
-                      setFormData({ ...formData, image_url: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-stone-300 text-sm outline-none focus:border-[#b43a22]"
-                  />
-                </div>
+              {/* Photo Upload & Spicy level */}
+              <div className="space-y-4">
+                <ImageUploader
+                  label="Foto Makanan / Minuman"
+                  value={formData.image_url}
+                  onChange={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="menus"
+                  required
+                />
 
-                <div className="space-y-1">
+                <div className="space-y-1 max-w-xs">
                   <label className="text-xs font-bold text-stone-700 uppercase tracking-wider">
                     Tingkat Pedas
                   </label>

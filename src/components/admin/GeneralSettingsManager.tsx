@@ -12,6 +12,7 @@ import {
   CheckCircle,
   ShieldAlert,
   RefreshCw,
+  Share2,
 } from 'lucide-react';
 
 export default function GeneralSettingsManager({
@@ -95,23 +96,76 @@ export default function GeneralSettingsManager({
         </button>
       </div>
 
-      {/* WhatsApp Number */}
-      <div className="space-y-1.5">
-        <label className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-2">
-          <Phone className="w-4 h-4 text-emerald-600" />
-          <span>Nomor WhatsApp Resmi (Tanpa tanda +, contoh: 6281299887766)</span>
-        </label>
-        <input
-          type="text"
-          value={settings.whatsappNumber}
-          onChange={(e) =>
-            setSettings({ ...settings, whatsappNumber: e.target.value })
-          }
-          className="w-full px-4 py-2.5 rounded-xl border border-stone-300 font-mono text-sm outline-none focus:border-[#b43a22]"
-        />
-        <p className="text-[11px] text-stone-400">
-          Nomor ini digunakan di tombol chat WhatsApp menu, reservasi, dan floating button.
-        </p>
+      {/* Kontak & Media Sosial */}
+      <div className="p-5 rounded-2xl bg-amber-50/50 border border-amber-200/80 space-y-4">
+        <div className="flex items-center gap-2 pb-2 border-b border-amber-200/60">
+          <Share2 className="w-4 h-4 text-[#b43a22]" />
+          <span className="text-xs font-bold uppercase tracking-wider text-amber-950">
+            Nomor WhatsApp & Tautan Media Sosial
+          </span>
+        </div>
+
+        {/* WhatsApp Number */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-2">
+            <Phone className="w-4 h-4 text-emerald-600" />
+            <span>Nomor WhatsApp Resmi (Format: 6281299887766)</span>
+          </label>
+          <input
+            type="text"
+            value={settings.whatsappNumber || ''}
+            onChange={(e) =>
+              setSettings({ ...settings, whatsappNumber: e.target.value })
+            }
+            placeholder="6281299887766"
+            className="w-full px-4 py-2.5 rounded-xl border border-stone-300 font-mono text-sm outline-none focus:border-[#b43a22] bg-white"
+          />
+          <p className="text-[11px] text-stone-500">
+            Nomor ini otomatis terpasang di seluruh tombol pesan menu, floating chat, reservasi acara, dan footer website.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+          {/* Instagram URL */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-pink-600" />
+              <span>Link Akun Instagram</span>
+            </label>
+            <input
+              type="url"
+              value={settings.instagramUrl || ''}
+              onChange={(e) =>
+                setSettings({ ...settings, instagramUrl: e.target.value })
+              }
+              placeholder="https://instagram.com/kantinmegarasa"
+              className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm outline-none focus:border-[#b43a22] bg-white"
+            />
+            <p className="text-[11px] text-stone-400">
+              Contoh: https://instagram.com/kantinmegarasa
+            </p>
+          </div>
+
+          {/* Facebook URL */}
+          <div className="space-y-1.5">
+            <label className="text-xs font-bold text-stone-700 uppercase tracking-wider flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-blue-600" />
+              <span>Link Halaman Facebook</span>
+            </label>
+            <input
+              type="url"
+              value={settings.facebookUrl || ''}
+              onChange={(e) =>
+                setSettings({ ...settings, facebookUrl: e.target.value })
+              }
+              placeholder="https://facebook.com/kantinmegarasa"
+              className="w-full px-4 py-2.5 rounded-xl border border-stone-300 text-sm outline-none focus:border-[#b43a22] bg-white"
+            />
+            <p className="text-[11px] text-stone-400">
+              Contoh: https://facebook.com/kantinmegarasa
+            </p>
+          </div>
+        </div>
       </div>
 
       {/* Operational Hours */}

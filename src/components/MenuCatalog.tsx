@@ -88,10 +88,16 @@ export default function MenuCatalog({
             const desc =
               locale === 'en' ? item.description_en : item.description_id;
 
+            const isAvailable = item.is_available !== false;
+
             return (
               <div
                 key={item.id}
-                className="group bg-white rounded-2xl overflow-hidden border border-amber-900/10 shadow-xs hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+                className={`group bg-white rounded-2xl overflow-hidden border shadow-xs transition-all duration-300 flex flex-col justify-between ${
+                  isAvailable
+                    ? 'border-amber-900/10 hover:shadow-xl'
+                    : 'border-stone-200 opacity-80 hover:opacity-100 bg-stone-50/50'
+                }`}
               >
                 <div>
                   {/* Photo with badging */}
@@ -101,10 +107,21 @@ export default function MenuCatalog({
                       alt={name}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      className={`object-cover transition-transform duration-300 ${
+                        isAvailable
+                          ? 'group-hover:scale-105'
+                          : 'grayscale-40 group-hover:grayscale-0'
+                      }`}
                     />
-                    <div className="absolute top-3 left-3 flex items-center gap-2">
-                      {item.is_favorite && (
+
+                    {/* Top Badges */}
+                    <div className="absolute top-3 left-3 flex flex-wrap items-center gap-2 z-10">
+                      {!isAvailable && (
+                        <span className="inline-flex items-center gap-1 bg-stone-900/90 text-white text-xs font-black tracking-wider px-2.5 py-1 rounded-md shadow-md backdrop-blur-xs border border-white/20 uppercase">
+                          {t('notAvailable')}
+                        </span>
+                      )}
+                      {isAvailable && item.is_favorite && (
                         <span className="inline-flex items-center gap-1 bg-[#b43a22] text-white text-xs font-bold px-2.5 py-1 rounded-md shadow-md">
                           <Star className="w-3.5 h-3.5 fill-white" />
                           {tCommon('favoriteBadge')}
@@ -117,13 +134,26 @@ export default function MenuCatalog({
                         </span>
                       )}
                     </div>
+
+                    {/* Semi-transparent overlay for unavailable item */}
+                    {!isAvailable && (
+                      <div className="absolute inset-0 bg-stone-900/20 backdrop-blur-[0.5px] pointer-events-none" />
+                    )}
                   </div>
 
                   {/* Body Content */}
                   <div className="p-5 space-y-2">
-                    <h3 className="font-serif font-bold text-lg text-stone-900 group-hover:text-[#b43a22] transition-colors leading-snug">
-                      {name}
-                    </h3>
+                    <div className="flex items-start justify-between gap-2">
+                      <h3
+                        className={`font-serif font-bold text-lg leading-snug transition-colors ${
+                          isAvailable
+                            ? 'text-stone-900 group-hover:text-[#b43a22]'
+                            : 'text-stone-700'
+                        }`}
+                      >
+                        {name}
+                      </h3>
+                    </div>
                     <p className="text-xs sm:text-sm text-stone-600 line-clamp-3 leading-relaxed">
                       {desc}
                     </p>
@@ -137,19 +167,34 @@ export default function MenuCatalog({
                       <span className="text-[11px] text-stone-500 block uppercase font-semibold">
                         {locale === 'en' ? 'Price' : 'Harga'}
                       </span>
-                      <span className="font-serif font-extrabold text-stone-950 text-lg sm:text-xl">
+                      <span
+                        className={`font-serif font-extrabold text-lg sm:text-xl ${
+                          isAvailable ? 'text-stone-950' : 'text-stone-500'
+                        }`}
+                      >
                         {tCommon('currency')} {item.price.toLocaleString('id-ID')}
                       </span>
                     </div>
 
-                    <button
-                      onClick={() => handleOrderWa(name)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white transition-all text-xs font-bold shadow-xs cursor-pointer"
-                      title={t('orderViaWA')}
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>{locale === 'en' ? 'Order' : 'Pesan'}</span>
-                    </button>
+                    {isAvailable ? (
+                      <button
+                        onClick={() => handleOrderWa(name)}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-600 text-emerald-800 hover:text-white transition-all text-xs font-bold shadow-xs cursor-pointer"
+                        title={t('orderViaWA')}
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>{locale === 'en' ? 'Order' : 'Pesan'}</span>
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleOrderWa(name)}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-semibold transition-all border border-stone-200 cursor-pointer"
+                        title={locale === 'en' ? 'Ask when back in stock' : 'Tanya ketersediaan berikutnya'}
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-stone-500" />
+                        <span className="text-[11px]">{locale === 'en' ? 'Check Stock' : 'Tanya Stok'}</span>
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

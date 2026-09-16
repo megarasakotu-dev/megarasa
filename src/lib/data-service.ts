@@ -23,6 +23,8 @@ let localGoogleReviews: GoogleReview[] = [...MOCK_GOOGLE_REVIEWS];
 
 export interface SiteSettings {
   whatsappNumber: string;
+  instagramUrl: string;
+  facebookUrl: string;
   gtmId: string;
   hoursWeekday: string;
   hoursWeekend: string;
@@ -32,6 +34,8 @@ export interface SiteSettings {
 
 let localSettings: SiteSettings = {
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '6281299887766',
+  instagramUrl: 'https://instagram.com/kantinmegarasa',
+  facebookUrl: 'https://facebook.com/kantinmegarasa',
   gtmId: process.env.NEXT_PUBLIC_GTM_ID || 'GTM-MEGARASA1',
   hoursWeekday: 'Senin - Jumat: 08.00 - 21.00 WIB',
   hoursWeekend: 'Sabtu - Minggu / Libur: 07.30 - 22.00 WIB',
@@ -63,7 +67,7 @@ export async function getCategories(): Promise<MenuCategory[]> {
 /**
  * Fetch all menu items (for public or admin)
  */
-export async function getMenuItems(onlyAvailable = true): Promise<MenuItem[]> {
+export async function getMenuItems(onlyAvailable = false): Promise<MenuItem[]> {
   if (isSupabaseConfigured && supabase) {
     try {
       let query = supabase.from('menu_items').select('*').order('order_index', { ascending: true });
@@ -429,6 +433,8 @@ export async function getSiteSettings(): Promise<SiteSettings> {
         });
         const combined = {
           whatsappNumber: settingsMap['whatsapp_number'] || localSettings.whatsappNumber,
+          instagramUrl: settingsMap['instagram_url'] || localSettings.instagramUrl,
+          facebookUrl: settingsMap['facebook_url'] || localSettings.facebookUrl,
           gtmId: settingsMap['gtm_id'] || localSettings.gtmId,
           hoursWeekday: settingsMap['hours_weekday'] || localSettings.hoursWeekday,
           hoursWeekend: settingsMap['hours_weekend'] || localSettings.hoursWeekend,
@@ -477,6 +483,8 @@ export async function updateSiteSettings(
         { key: 'hours_weekday', value: nextSettings.hoursWeekday },
         { key: 'hours_weekend', value: nextSettings.hoursWeekend },
         { key: 'whatsapp_number', value: nextSettings.whatsappNumber },
+        { key: 'instagram_url', value: nextSettings.instagramUrl },
+        { key: 'facebook_url', value: nextSettings.facebookUrl },
         { key: 'address', value: nextSettings.address },
         { key: 'landmark', value: nextSettings.landmark },
         { key: 'gtm_id', value: nextSettings.gtmId },
