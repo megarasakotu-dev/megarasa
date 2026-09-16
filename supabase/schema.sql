@@ -1,19 +1,43 @@
 -- ==============================================================================
--- KANTIN MEGA RASA - SUPABASE DATABASE SCHEMA & SEED DATA
--- Lokasi: Kawasan Wisata Kota Tua, Jakarta
+-- KANTIN MEGA RASA KOTA TUA JAKARTA
+-- COMPLETE CONSOLIDATED SUPABASE DATABASE SCHEMA & SEED DATA
+-- ==============================================================================
+-- File ini mencakup seluruh tabel DDL, Row Level Security (RLS) Policies,
+-- serta data awal (Seed Data) untuk Kantin Mega Rasa.
+--
+-- CARA PEMAKAIAN:
+-- 1. Buka Supabase Dashboard (https://supabase.com/dashboard)
+-- 2. Pilih Project Anda
+-- 3. Buka menu "SQL Editor" di bilah samping kiri
+-- 4. Tempel (Paste) seluruh isi script ini
+-- 5. Klik tombol "Run" (atau Ctrl+Enter)
 -- ==============================================================================
 
 -- 1. EXTENSIONS
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
--- 2. DROP EXISTING TABLES IF RE-RUNNING
+-- 2. BERSIHKAN TABEL LAMA JIKA INGIN RE-INSTALL (URUTAN HAPUS CASCADE)
 DROP TABLE IF EXISTS contact_inquiries CASCADE;
+DROP TABLE IF EXISTS google_reviews CASCADE;
+DROP TABLE IF EXISTS nasi_box_packages CASCADE;
 DROP TABLE IF EXISTS event_packages CASCADE;
 DROP TABLE IF EXISTS event_spaces CASCADE;
 DROP TABLE IF EXISTS menu_items CASCADE;
 DROP TABLE IF EXISTS menu_categories CASCADE;
+DROP TABLE IF EXISTS site_settings CASCADE;
 
--- 3. TABEL KATEGORI MENU
+-- ==============================================================================
+-- 3. DDL DEFINISI TABEL
+-- ==============================================================================
+
+-- TABEL 1: PENGATURAN UMUM SITUS (SITE SETTINGS)
+CREATE TABLE site_settings (
+    key VARCHAR(100) PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- TABEL 2: KATEGORI MENU
 CREATE TABLE menu_categories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     slug VARCHAR(50) UNIQUE NOT NULL,
@@ -25,7 +49,7 @@ CREATE TABLE menu_categories (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 4. TABEL MENU MAKANAN & MINUMAN
+-- TABEL 3: MENU MAKANAN & MINUMAN (DINE-IN)
 CREATE TABLE menu_items (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     category_slug VARCHAR(50) REFERENCES menu_categories(slug) ON DELETE SET NULL,
@@ -37,12 +61,12 @@ CREATE TABLE menu_items (
     image_url TEXT,
     is_favorite BOOLEAN DEFAULT FALSE,
     is_available BOOLEAN DEFAULT TRUE,
-    spicy_level INT DEFAULT 0, -- 0: no spice, 1-3
+    spicy_level INT DEFAULT 0, -- 0: tidak pedas, 1-3
     order_index INT DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 5. TABEL RUANG ACARA (LANTAI ATAS)
+-- TABEL 4: RUANG ACARA LANTAI ATAS (HERITAGE EVENT SPACE)
 CREATE TABLE event_spaces (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     slug VARCHAR(50) UNIQUE NOT NULL,
@@ -66,7 +90,7 @@ CREATE TABLE event_spaces (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 6. TABEL PAKET SEWA RUANG ACARA
+-- TABEL 5: PAKET SEWA RUANG ACARA
 CREATE TABLE event_packages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     space_slug VARCHAR(50) REFERENCES event_spaces(slug) ON DELETE CASCADE,
@@ -84,22 +108,8 @@ CREATE TABLE event_packages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 7. TABEL FORMULIR RESERVASI & KONTAK
-CREATE TABLE contact_inquiries (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    full_name VARCHAR(150) NOT NULL,
-    email VARCHAR(150),
-    phone_number VARCHAR(50) NOT NULL,
-    inquiry_type VARCHAR(50) NOT NULL, -- 'dining_reservation' OR 'event_space_rental' OR 'nasi_box_catering' OR 'general'
-    event_date DATE,
-    estimated_pax INT,
-    notes TEXT,
-    status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'contacted', 'confirmed', 'cancelled'
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- 8. TABEL PAKET NASI BOX (KATERING ROMBONGAN KOTA TUA)
-CREATE TABLE IF NOT EXISTS nasi_box_packages (
+-- TABEL 6: PAKET NASI BOX (KATERING ROMBONGAN KOTA TUA)
+CREATE TABLE nasi_box_packages (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     slug VARCHAR(100) UNIQUE NOT NULL,
     name_id VARCHAR(150) NOT NULL,
@@ -118,8 +128,8 @@ CREATE TABLE IF NOT EXISTS nasi_box_packages (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 9. TABEL ULASAN GOOGLE MAPS (TESTIMONI PENGUNJUNG)
-CREATE TABLE IF NOT EXISTS google_reviews (
+-- TABEL 7: ULASAN GOOGLE MAPS (TESTIMONI PENGUNJUNG TERVERIFIKASI)
+CREATE TABLE google_reviews (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     author_name VARCHAR(150) NOT NULL,
     author_avatar TEXT,
@@ -137,16 +147,36 @@ CREATE TABLE IF NOT EXISTS google_reviews (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- 10. ROW LEVEL SECURITY (RLS)
+-- TABEL 8: FORMULIR INQUIRY, RESERVASI & KONTAK
+CREATE TABLE contact_inquiries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    full_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150),
+    phone_number VARCHAR(50) NOT NULL,
+    inquiry_type VARCHAR(50) NOT NULL, -- 'dining_reservation', 'event_space_rental', 'nasi_box_catering', 'general'
+    event_date DATE,
+    estimated_pax INT,
+    notes TEXT,
+    status VARCHAR(50) DEFAULT 'pending', -- 'pending', 'contacted', 'confirmed', 'cancelled'
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- ==============================================================================
+-- 4. ROW LEVEL SECURITY (RLS) & AKSES API
+-- ==============================================================================
+
+-- Aktifkan RLS di seluruh tabel
+ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE menu_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_spaces ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_packages ENABLE ROW LEVEL SECURITY;
-ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nasi_box_packages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE google_reviews ENABLE ROW LEVEL SECURITY;
+ALTER TABLE contact_inquiries ENABLE ROW LEVEL SECURITY;
 
--- Public Read & Write Policies
+-- Policy Publik: Membaca Data (SELECT)
+CREATE POLICY "Public read for site_settings" ON site_settings FOR SELECT USING (true);
 CREATE POLICY "Public read for menu_categories" ON menu_categories FOR SELECT USING (true);
 CREATE POLICY "Public read for menu_items" ON menu_items FOR SELECT USING (true);
 CREATE POLICY "Public read for event_spaces" ON event_spaces FOR SELECT USING (true);
@@ -154,26 +184,41 @@ CREATE POLICY "Public read for event_packages" ON event_packages FOR SELECT USIN
 CREATE POLICY "Public read for nasi_box_packages" ON nasi_box_packages FOR SELECT USING (true);
 CREATE POLICY "Public read for google_reviews" ON google_reviews FOR SELECT USING (true);
 
--- Public CRUD Policies for Admin operations
+-- Policy Admin / Anon Key: Kelola Data Penuh (INSERT, UPDATE, DELETE)
+CREATE POLICY "Enable all for site_settings" ON site_settings FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Enable all for menu_categories" ON menu_categories FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for menu_items" ON menu_items FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for event_spaces" ON event_spaces FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for event_packages" ON event_packages FOR ALL USING (true) WITH CHECK (true);
-CREATE POLICY "Enable all for menu_categories" ON menu_categories FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for nasi_box_packages" ON nasi_box_packages FOR ALL USING (true) WITH CHECK (true);
 CREATE POLICY "Enable all for google_reviews" ON google_reviews FOR ALL USING (true) WITH CHECK (true);
 
--- Public Insert Policy for inquiries form
+-- Policy Pengunjung: Mengirim formulir reservasi
 CREATE POLICY "Public insert for contact_inquiries" ON contact_inquiries FOR INSERT WITH CHECK (true);
+CREATE POLICY "Enable all for contact_inquiries" ON contact_inquiries FOR ALL USING (true) WITH CHECK (true);
 
--- 9. SEED DATA
--- Kategori
+-- ==============================================================================
+-- 5. SEED DATA AWAL (INITIAL DATA)
+-- ==============================================================================
+
+-- 1. PENGATURAN UMUM SITUS
+INSERT INTO site_settings (key, value) VALUES
+('whatsapp_number', '628129506237'),
+('gtm_id', 'GTM-MEGARASA1'),
+('hours_weekday', 'Senin - Jumat: 08.00 - 21.00 WIB'),
+('hours_weekend', 'Sabtu - Minggu / Libur: 07.30 - 22.00 WIB'),
+('address', 'Jl. Kalibesar Timur No. 18, Kawasan Kota Tua, Pinangsia, Taman Sari, Jakarta Barat 11110'),
+('landmark', 'Hanya 3 menit jalan kaki dari Museum Sejarah Jakarta (Fatahillah) dan 5 menit dari Jembatan Kota Intan.')
+ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value;
+
+-- 2. KATEGORI MENU
 INSERT INTO menu_categories (slug, name_id, name_en, description_id, description_en, order_index) VALUES
 ('makanan-utama', 'Makanan Utama', 'Main Courses', 'Hidangan khas nusantara dan Betawi autentik Kota Tua', 'Authentic Indonesian and Betawi specialties of Kota Tua', 1),
 ('camilan', 'Camilan & Kudapan', 'Traditional Snacks', 'Kudapan ringan dan jajanan pasar tempo dulu', 'Traditional light bites and heritage street snacks', 2),
 ('minuman-khas', 'Minuman Khas & Tradisional', 'Specialty & Heritage Drinks', 'Kesegaran rempah dan es tradisional pelepas dahaga', 'Refreshing herbal spices and traditional iced treats', 3),
 ('kopi-teh', 'Kopi & Teh', 'Coffee & Tea', 'Seduhan biji kopi nusantara dan teh wangi khas peranakan', 'Indonesian heritage beans brew and aromatic floral tea', 4);
 
--- Menu Items
+-- 3. MENU MAKANAN & MINUMAN
 INSERT INTO menu_items (category_slug, name_id, name_en, description_id, description_en, price, image_url, is_favorite, spicy_level, order_index) VALUES
 ('makanan-utama', 'Soto Betawi Kuah Santan Susu', 'Betawi Beef Soup (Coconut & Fresh Milk)', 'Potongan daging sapi empuk dengan kuah gurih rempah santan dan susu segar, disajikan dengan emping dan acar segar.', 'Tender beef cuts slow-cooked in rich aromatic coconut and fresh milk broth, served with emping crackers and pickles.', 45000, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80', true, 1, 1),
 ('makanan-utama', 'Nasi Goreng Mega Rasa Kota Tua', 'Mega Rasa Special Heritage Fried Rice', 'Nasi goreng racikan bumbu rahasia warisan dengan suwiran ayam kampung, telur mata sapi, sate ayam, dan kerupuk udang.', 'Our signature fried rice with heirloom spices, shredded free-range chicken, sunny side egg, chicken satay, and shrimp crackers.', 38000, 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?auto=format&fit=crop&w=800&q=80', true, 1, 2),
@@ -195,7 +240,7 @@ INSERT INTO menu_items (category_slug, name_id, name_en, description_id, descrip
 ('kopi-teh', 'Es Kopi Susu Gula Aren Mega Rasa', 'Mega Rasa Iced Palm Sugar Milk Coffee', 'Espresso double shot dipadu susu segar creamy dan lelehan gula aren murni khas nusantara.', 'Double shot espresso blend combined with velvety fresh milk and rich unrefined organic palm sugar.', 22000, 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=800&q=80', true, 0, 15),
 ('kopi-teh', 'Teh Poci Melati Gula Batu (Untuk 2 Orang)', 'Traditional Claypot Jasmine Tea with Rock Sugar', 'Seduhan daun teh melati wangi dalam poci tanah liat alami, disajikan dengan manisnya gula batu.', 'Fragrant whole leaf jasmine tea brewed inside an unglazed clay teapot, served with rock sugar crystals.', 25000, 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80', false, 0, 16);
 
--- Ruang Acara Lantai Atas
+-- 4. RUANG ACARA LANTAI ATAS
 INSERT INTO event_spaces (
     slug, name_id, name_en, tagline_id, tagline_en,
     description_id, description_en,
@@ -225,7 +270,7 @@ INSERT INTO event_spaces (
     ]
 );
 
--- Paket Acara
+-- 5. PAKET SEWA RUANG ACARA
 INSERT INTO event_packages (
     space_slug, name_id, name_en, price_per_person, price_package, min_pax, duration_hours,
     features_id, features_en, badge_id, badge_en, order_index
@@ -258,7 +303,7 @@ INSERT INTO event_packages (
     'Paling Laris', 'Best Value & Seller', 3
 );
 
--- Paket Nasi Box & Snack Box (Katering Wisata Kota Tua)
+-- 6. PAKET NASI BOX & SNACK BOX (KATERING WISATA KOTA TUA)
 INSERT INTO nasi_box_packages (
     slug, name_id, name_en, description_id, description_en,
     price, min_order, items_id, items_en, badge_id, badge_en,
@@ -317,7 +362,7 @@ INSERT INTO nasi_box_packages (
     false, 4
 );
 
--- Ulasan Pengunjung Google Maps (Testimoni)
+-- 7. ULASAN GOOGLE MAPS (TESTIMONI PENGUNJUNG)
 INSERT INTO google_reviews (
     author_name, author_badge_id, author_badge_en,
     rating, relative_time_id, relative_time_en,
@@ -391,4 +436,6 @@ INSERT INTO google_reviews (
     24
 );
 
-
+-- ==============================================================================
+-- SELESAI! SEMUA TABEL, POLICIES, DAN DATA AWAL TELAH SIAP DIGUNAKAN.
+-- ==============================================================================
