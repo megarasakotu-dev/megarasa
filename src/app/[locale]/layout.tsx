@@ -104,6 +104,27 @@ export default async function LocaleLayout({
     <html lang={locale} className="scroll-smooth" suppressHydrationWarning>
       <head>
         <GtmHeadScript />
+        {/* Instant Splash Screen Guard: Immediately sets background and displays overlay before any React code executes */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (!sessionStorage.getItem('megarasa_splash_seen')) {
+                  document.documentElement.classList.add('splash-active');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html.splash-active body {
+                overflow: hidden !important;
+              }
+            `,
+          }}
+        />
       </head>
       <body className="antialiased bg-[#fdfbf8] text-[#2c1e17] selection:bg-[#b43a22] selection:text-white flex flex-col min-h-screen" suppressHydrationWarning>
         <GtmBodyNoscript />

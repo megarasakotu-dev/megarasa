@@ -36,3 +36,32 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #b43a22;
 }
+
+/* Zero-Flicker Splash Screen Animations */
+@keyframes megaPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.92;
+  }
+}
+
+@keyframes megaShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-mega-pulse {
+  animation: megaPulse 1.8s ease-in-out infinite;
+}
+
+.animate-mega-shimmer {
+  animation: megaShimmer 1.2s ease-in-out infinite;
+}
