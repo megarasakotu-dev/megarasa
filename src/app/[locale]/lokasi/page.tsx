@@ -12,8 +12,8 @@ import {
   Compass,
 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Cache location & schedule on CDN edge with 60s background revalidation
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,

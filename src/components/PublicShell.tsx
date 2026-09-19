@@ -4,6 +4,7 @@ import { usePathname } from '@/i18n/routing';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+import SplashScreen from '@/components/SplashScreen';
 
 export default function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,6 +16,7 @@ export default function PublicShell({ children }: { children: React.ReactNode })
 
   return (
     <div className="flex flex-col min-h-screen">
+      <SplashScreen />
       <Navbar />
       <main className="flex-grow">{children}</main>
       <Footer />

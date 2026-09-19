@@ -19,8 +19,9 @@ import {
   ShoppingBag,
 } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// Enable Edge Caching with Incremental Static Regeneration (ISR)
+// Pages are served instantly from Vercel Edge CDN and revalidated in the background every 60s
+export const revalidate = 60;
 
 export default async function HomePage({
   params,
